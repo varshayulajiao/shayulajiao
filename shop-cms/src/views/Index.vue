@@ -2,16 +2,19 @@
     <div class="common-layout">
         <el-container>
             <el-header>
+                <div class="header-left">
                 <h2 class="header-h2">电商管理后台</h2>
                 <div class="menu-lockBox">
                 <el-icon v-if="!isCollapse" class="lock-icon" @click="isCollapse=true"><Unlock  /></el-icon>
                 <el-icon v-else class="lock-icon" @click="isCollapse=false"><Lock/></el-icon>
                 <el-icon class="reload-icon" @click="reload"><Refresh /></el-icon>
                 </div>
+                </div>
                 <div class="user">
                     <el-avatar
                     src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                 />
+                <span>username:</span>
                 </div>  
             </el-header>
             <el-container>
@@ -107,6 +110,9 @@ const reload=()=>{
 <style scoped>
 .el-header {
     background-color: cornflowerblue;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .el-aside{
     height: calc(100vh - 60px);
@@ -116,10 +122,6 @@ const reload=()=>{
 .el-menu{
     height: 100%;
     box-shadow: 5px 0px 2px rgba(195, 192, 192, 0.1);
-}
-.el-header{
-    display: flex;
-    align-items: center;
 }
 .menu-lockBox{
     margin-left: 50px;
@@ -141,7 +143,6 @@ const reload=()=>{
 }
 .reload-icon{
     color:white;
-    margin-left: 20px;
     cursor: pointer;
     height: 60px;
     width: 50px;
@@ -149,7 +150,19 @@ const reload=()=>{
 .reload-icon:hover{
     background: rgb(120, 167, 255);
 }
+.header-left{
+    display: flex;
+    align-items: center;
+}
 .user{
-   justify-self: flex-end;
+    display: flex;
+    align-items: center;
+}
+.user .el-avatar{
+    margin-right: 10px;
+}
+.user span{
+    color: white;
+    font-weight: bold;
 }
 </style>
