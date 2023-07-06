@@ -1,21 +1,50 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
+//懒加载
+const Index=()=>import('../views/Index.vue')
+const Login=()=>import('../views/Login.vue')
+const ClassManage=()=>import('../views/ClassManage.vue')
+const GoodsManage=()=>import('../views/GoodsManage.vue')
+const OrderManage=()=>import('../views/OrderManage.vue')
+const UsersManage=()=>import('../views/UsersManage.vue')
+const UsersLevel=()=>import('../views/UsersLevel.vue')
+const Home=()=>import('../views/Home.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      name: 'index',
+      component: Index
+    },{
+      path: '/login',
+      name: 'login',
+      component: Login
+    },{
+      path: '/index/home',
       name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      component: Home
+    },{
+      path: '/index/classmanage',
+      name: 'classmanage',
+      component: ClassManage
+    },{
+      path: '/index/goodsmanage',
+      name: 'goodsmanage',
+      component: GoodsManage
+    },{
+      path: '/index/ordermanage',
+      name: 'ordermanage',
+      component: OrderManage
+    },{
+      path: '/index/usersmanage',
+      name: 'usersmanage',
+      component: UsersManage
+    },{
+      path: '/index/userslevel',
+      name: 'userslevel',
+      component: UsersLevel
     }
   ]
 })
