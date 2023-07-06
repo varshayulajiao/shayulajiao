@@ -2,24 +2,41 @@
     <el-row>
         <el-col :span="16" class="left-bg">
             <div class="left-title">
-                <div class="left-font">欢迎光临</div>
+                <h2 class="left-font">欢迎光临</h2>
             </div>
         </el-col>
         <el-col :span="8" class="right-bg">
             <div class="right-title">
-                <div class="right-font">欢迎回来</div>
+                <div class="right-font">
+                    <h2>
+                        欢迎回来
+                    </h2>
+                    <div class="right-divi">
+                        <el-divider>
+                            账号密码登录
+                        </el-divider>
+                    </div>
+
+                </div>
                 <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" status-icon>
-                    <el-form-item label="用户名" prop="username"  class="right-input">
-                        <el-input v-model="ruleForm.username"  placeholder="请输入用户名"/>
-                    </el-form-item>
-                    <el-form-item label="密码" prop="password"  class="right-input">
-                        <el-input v-model="ruleForm.password" placeholder="请输入密码" />
-                    </el-form-item>
-                    <el-form-item class="right-footer">
-                        <el-button size="large" type="primary" @click="submitForm(ruleFormRef)">
-                            登录
-                        </el-button>
-                    </el-form-item>
+                    <div class="right-input">
+                        <el-form-item prop="username" >
+                            <el-input v-model="ruleForm.username" placeholder="请输入用户名" />
+                        </el-form-item>
+                    </div>
+                    <div class="right-input">
+                        <el-form-item prop="password" >
+                            <el-input v-model="ruleForm.password" placeholder="请输入密码" />
+                        </el-form-item>
+                    </div>
+                    <div class="right-footer">
+                        <el-form-item >
+                            <el-button size="large" type="primary" @click="submitForm(ruleFormRef)">
+                                登录
+                            </el-button>
+                        </el-form-item>
+                    </div>
+
                 </el-form>
             </div>
         </el-col>
@@ -61,49 +78,75 @@ const submitForm = (formEl) => {
 }
 
 .left-bg {
-    background-color: rgba(0, 0, 255, 0.7)
+    background-color: rgba(0, 0, 255, 0.7);
+    display: flex;
 }
 
 .right-bg {
     background-color: white;
-}
-.right-bg .right-title{
-    margin: 350px auto;
-
-}
-.left-bg .left-title {
-    margin: 400px auto;
-    font-size: 40px;
-    color: white;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
+}
+
+.right-bg .right-title {
+    width: 100%;
+    align-self: center;
 
 }
-.right-bg .right-title .right-font{
-     font-weight: bold;
-     font-size: 36px;
-     color: #000;
-     margin-bottom: 50px;
-     margin-left: 230px;
+
+.left-bg .left-title {
+    width: 100%;
+    align-self: center;
+
+
 }
-.right-bg .right-title .el-form{
-    margin-left: 100px;
+
+.right-bg .right-title .right-font {
+    width: 100%;
 }
-.right-bg .right-title .right-input{
-    width: calc(100% - 120px);
+
+.right-bg .right-title .right-font .right-divi {
+    width: 100%;
+    display: flex;
 }
-.right-bg .right-title .right-footer{
-margin-left: 20px;
+
+.right-bg .right-title .right-font h2 {
+    font-weight: bold;
+    font-size: 36px;
+    color: #000;
+    text-align: center;
 }
-.right-bg .right-title .right-footer .el-button{
+
+.right-bg .right-title .right-font .el-divider {
+    justify-self: center;
+    margin-bottom: 50px;
+}
+
+.right-bg .right-title .right-font .el-divider :deep(.el-divider__text) {
+    font-size: 20px;
+    color: #ccc;
+}
+.right-bg .right-title .right-input {
+    width: 80%;
+}
+
+.right-bg .right-title .right-footer {
+    width:80%;
+    display: flex;
+  
+}
+
+.right-bg .right-title .right-footer .el-button {
+   margin-left: 90px;
     margin-top: 20px;
     width: 200px;
     height: 40px;
     border-radius: 20px;
 }
-.left-bg .left-title .left-font {
-    font-weight: bold;
-}
 
+.left-bg .left-title .left-font {
+    font-size: 40px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
 </style>
