@@ -16,35 +16,38 @@ const router = createRouter({
     {
       path: '/',
       name: 'index',
-      component: Index
+      component: Index,
+      children:[
+        {
+          path: 'home',
+          name: 'home',
+          component: Home
+        },{
+          path: 'classmanage',
+          name: 'classmanage',
+          component: ClassManage
+        },{
+          path: 'goodsmanage',
+          name: 'goodsmanage',
+          component: GoodsManage
+        },{
+          path: 'ordermanage',
+          name: 'ordermanage',
+          component: OrderManage
+        },{
+          path: 'usersmanage',
+          name: 'usersmanage',
+          component: UsersManage
+        },{
+          path: 'userslevel',
+          name: 'userslevel',
+          component: UsersLevel
+        }
+      ]
     },{
       path: '/login',
       name: 'login',
       component: Login
-    },{
-      path: '/index/home',
-      name: 'home',
-      component: Home
-    },{
-      path: '/index/classmanage',
-      name: 'classmanage',
-      component: ClassManage
-    },{
-      path: '/index/goodsmanage',
-      name: 'goodsmanage',
-      component: GoodsManage
-    },{
-      path: '/index/ordermanage',
-      name: 'ordermanage',
-      component: OrderManage
-    },{
-      path: '/index/usersmanage',
-      name: 'usersmanage',
-      component: UsersManage
-    },{
-      path: '/index/userslevel',
-      name: 'userslevel',
-      component: UsersLevel
     }
   ]
 })
