@@ -47,9 +47,10 @@
                 :data="tableData"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
+                
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column label="商品">
+                <el-table-column label="商品" width="300">
                 <template #default="scope">
                     <div class="all">
                         <div class="img">
@@ -57,26 +58,136 @@
                         </div>
                         <div class="text">
                             <p>商品名称</p>
-                            <span class="text-rose-500">￥最低销售价格</span>
-                            <span class="text-rose-500">￥最低原价</span>
+                            <span class="text-rose-500">￥10</span>
+                            <el-divider direction="vertical" />
+                            <span class="text-rose-500 text-xs">￥100</span>
+                            <p class="text-xs text-gray-400">分类：运动旅行</p>
+                            <p class="text-xs text-gray-400">创建时间：1970-01-01 08:33:41</p>
                         </div>
                     </div>
                 </template>
                 </el-table-column>
-                <el-table-column label="实际销量" property="xxx"></el-table-column>
-                <el-table-column property="name" label="商品状态" width="120" />
-                <el-table-column property="address" label="审核状态" />
-                <el-table-column label="操作" width="400px">
+                <el-table-column label="实际销量" property="xxx" width="60"></el-table-column>
+                <el-table-column label="商品状态" width="75" >
+                        <template #default="scope">
+                            <el-tag class="ml-2" type="danger">仓库</el-tag>
+                        </template>
+                </el-table-column>
+                <el-table-column label="审核状态" >
                     <template #default="scope">
-                        <a class="btn-text">修改</a>
-                        <a class="btn-text">商品规格</a>
-                        <a class="btn-text">设置轮播图</a>
+                        <el-button type="success" plain class="state-success-button">审核通过</el-button>
+                        <el-button type="danger" plain class="state-danger-button">审核拒绝</el-button>
+                     </template>
+                </el-table-column>
+                <el-table-column label="库存数量" property="count">
+
+                </el-table-column>
+                <el-table-column label="操作" width="400px"> 
+                    <template #default="scope">
+                        <a class="btn-text" @click="handleModifyDrawer(scope.$index,scope.row)">修改</a>
+                        <a class="btn-text" @click="handleCarouselDrawer(scope.$index,scope.row)">设置轮播图</a>
                         <a class="btn-text">商品详情</a>
                         <a class="btn-text">删除</a>
-                        
                     </template>
                 </el-table-column>
             </el-table>
+                    <!-- 修改的抽屉 -->
+                <el-drawer
+                    v-for="item in tableData"
+                    v-model="item.modifyDrawer"
+                    title="修改"
+                >
+                <el-form
+                    ref="modifyRuleFormRef"
+                    :model="modifyRuleForm"
+                    label-width="120px"
+                    class="demo-ruleForm"
+                    status-icon
+                >
+                    <el-form-item label="商品名称" >
+                    <el-input type="password" v-model="modifyRuleForm.goodsName" />
+                    </el-form-item>
+                    <el-form-item label="封面" >
+                        <el-upload
+                            class="avatar-uploader"
+                            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload"
+                        >
+                            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                        </el-upload>
+                    </el-form-item>
+                    <!-- 修改抽屉的下拉选择框 -->
+                    <el-form-item label="商品分类">
+                        <el-select v-model="select_value">
+                            <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                            :disabled="item.disabled"
+                            />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="商品描述">
+                    <el-input type="text" v-model="modifyRuleForm.goodsInfo" />
+                    </el-form-item>
+                    <el-form-item label="商品单位" >
+                    <el-input type="text" v-model="modifyRuleForm.goodsUnit" style="width:100px"/>
+                    </el-form-item>
+                    <el-form-item label="总库存">
+                    <el-input type="text" v-model="modifyRuleForm.goodsAllCount" style="width:150px"/>
+                    <el-tag class="ml-2" type="info">件</el-tag>
+                    </el-form-item>
+                    <el-form-item label="库存预警">
+                    <el-input type="text" v-model="modifyRuleForm.countDanger" style="width:150px"/>
+                    <el-tag class="ml-2" type="info">件</el-tag>
+                    </el-form-item>
+                    <el-form-item label="最低销售">
+                    <el-input type="text" v-model="modifyRuleForm.price" style="width:150px"/>
+                    <el-tag class="ml-2" type="info">元</el-tag>
+                    </el-form-item>
+                    <el-form-item label="最低原价">
+                    <el-input type="text" v-model="modifyRuleForm.originPrice" style="width:150px"/>
+                    <el-tag class="ml-2" type="info">元</el-tag>
+                    </el-form-item>
+                    <el-form-item label="库存显示">
+                        <el-radio-group v-model="countShow">
+                            <el-radio label="是" border>是</el-radio>
+                            <el-radio label="否" border>否</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="是否上架">
+                        <el-radio-group v-model="grounding">
+                            <el-radio label="是" size="large" border>是</el-radio>
+                            <el-radio label="否" size="large" border>否</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div style="flex: auto">
+                        <el-button type="primary">提交</el-button>
+                        <el-button >取消</el-button>
+                    </div>
+                    </template>
+                </el-drawer>
+                <!-- 设置轮播图抽屉 -->
+                <el-drawer
+                    v-for="item in tableData"
+                    v-model="item.carouselDrawer"
+                    title="设置轮播图"
+                >
+                
+                <template #footer>
+                    <div style="flex: auto">
+                        <el-button type="primary" >提交</el-button>
+                        <el-button  >取消</el-button>
+                    </div>
+                    </template>
+                </el-drawer>
+
         </el-card>
     </div>
 </template>
@@ -117,20 +228,85 @@ const multipleSelection =ref(null)
 const handleSelectionChange = (val) => {
   multipleSelection.value = val
 }
-const tableData = [
+const tableData = ref([
   {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-    xxx:'123'
+    xxx:'123',
+    count:1000,
+    modifyDrawer:false,
+    carouselDrawer:false
   },
   {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-    xxx:'456'
+    xxx:'456',
+    count:200,
+    modifyDrawer:false,
+    carouselDrawer:false
   }
-]
+])
+//表格操作部分抽屉功能--修改
+const drawer=ref(false)
+const handleModifyDrawer=(index,row)=>{
+    tableData.value[index].modifyDrawer=!tableData.value[index].modifyDrawer
+}
+const handleCarouselDrawer=(index,row)=>{
+    tableData.value[index].carouselDrawer=!tableData.value[index].carouselDrawer
+}
+const modifyRuleFormRef=ref(null)
+const modifyRuleForm=reactive({
+    goodsName:'',
+    img:'',
+    goodsClass:'',
+    goodsInfo:'',
+    goodsUnit:'件',
+    goodsAllCount:'',
+    countDanger:'',
+    price:'',
+    originPrice:'',
+    countShow:'',
+    grounding:'',
+})
+const imageUrl = ref('')
+
+const handleAvatarSuccess = (data) => {
+    console.log(data)
+}
+
+const beforeAvatarUpload = (rawFile) => {
+    if (rawFile.type !== 'image/jpeg'&&rawFile.type !== 'image/png') {
+        ElMessage.error('Avatar picture must be JPG format!')
+        return false
+    } else if (rawFile.size / 1024 / 1024 > 2) {
+        ElMessage.error('Avatar picture size can not exceed 2MB!')
+        return false
+    }
+    return true
+}
+//下拉框
+const select_value=ref('手机数码')
+const options=ref([
+{
+    value: '手机数码',
+    label: '手机数码',
+  },
+  {
+    value: '运动旅行',
+    label: '运动旅行',
+  },
+  {
+    value: '居家生活',
+    label: '居家生活',
+  },
+  {
+    value: '智能家电',
+    label: '智能家电',
+  },
+  {
+    value: '电器家务',
+    label: '电器家务',
+  },
+])
+//库存显示 是否上架
+const countShow=ref('是')
+const grounding=ref('是')
 </script>
 
 <style scoped>
@@ -161,7 +337,10 @@ const tableData = [
 }
 .all .img{
     width:50px;
-    height:50px
+    height:50px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 5px;
 }
 .all .img img{
     width: 100%;
@@ -171,5 +350,49 @@ const tableData = [
 .text-rose-500{
     --tw-text-opacity: 1;
     color: rgba(244,63,94,var(--tw-text-opacity));
+}
+.text-xs{
+    font-size: .75rem;
+    line-height: 1rem;
+}
+.text-gray-400{
+    --tw-text-opacity: 1;
+    color: rgba(156,163,175,var(--tw-text-opacity));
+}
+.btn-bottom{
+    margin-bottom: 10px;
+}
+.state-danger-button{
+    margin-left:0;
+    margin-top:5px
+}
+.avatar-uploader .avatar {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+.avatar-uploader :deep(.el-upload) {
+    border: 1px dashed var(--el-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader :deep(.el-upload:hover) {
+    border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+}
+:deep(.el-drawer){
+    width:40% !important
 }
 </style>
