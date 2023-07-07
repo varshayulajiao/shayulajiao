@@ -63,19 +63,19 @@
     </el-row>
     <el-row :gutter="15">
                 <el-col :span="3" shadow="hover">
-                    <el-card class="card-icon">
+                    <el-card class="card-icon" @click="handleUser">
                         <el-icon color="blue"><Avatar /></el-icon>
                         <div class="icon-foot">用户</div>
                     </el-card>
                 </el-col>
                 <el-col :span="3" shadow="hover">
-                    <el-card class="card-icon">
+                    <el-card class="card-icon" @click="handleGoods">
                         <el-icon color="purple"><ShoppingCart /></el-icon>
                         <div class="icon-foot">商品</div>
                     </el-card>
                 </el-col>
                 <el-col :span="3" shadow="hover">
-                    <el-card class="card-icon">
+                    <el-card class="card-icon" @click="handleOrder">
                         <el-icon color="pink"><Box /></el-icon>
                         <div class="icon-foot">订单</div>
                     </el-card>
@@ -201,12 +201,22 @@
 </template>
 
 <script setup>
-import {ref,watchEffect,onMounted} from 'vue'
+import {ref,watchEffect} from 'vue'
+import {useRouter} from 'vue-router'
 import * as echarts from 'echarts';
 const tabRef=ref()
 const activeName=ref('month')
 let myChart;
-
+const router = useRouter()
+const handleUser = ()=>{
+    router.push('/usersmanage')
+}
+const handleOrder = ()=>{
+    router.push('/ordermanage')
+}
+const handleGoods = ()=>{
+    router.push('/goodsmanage')
+}
 watchEffect(()=>{
     if(!myChart){
      myChart = echarts.init(tabRef.value);   
