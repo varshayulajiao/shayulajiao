@@ -370,4 +370,12 @@ const screen=()=>{
     align-items: center;
     justify-content: space-between;
 }
+:deep(.el-tabs--card>.el-tabs__header .el-tabs__item){
+    background: #fff;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+:deep(.el-tabs--card>.el-tabs__header .el-tabs__nav){
+    border: 0;
+}
 </style>
