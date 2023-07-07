@@ -26,7 +26,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item>
+                    <el-form-item class="btn-right">
                         <el-button type="primary" @click="submitForm(ruleFormRef)">
                             搜索
                         </el-button>
@@ -42,6 +42,7 @@
                 <el-button>上架</el-button>
                 <el-button>下架</el-button>
             </div>
+            <!-- 下面那块表格 -->
             <el-table
                 ref="multipleTableRef"
                 :data="tableData"
@@ -73,7 +74,7 @@
                             <el-tag class="ml-2" type="danger">仓库</el-tag>
                         </template>
                 </el-table-column>
-                <el-table-column label="审核状态" >
+                <el-table-column label="审核状态" width="100">
                     <template #default="scope">
                         <el-button type="success" plain class="state-success-button">审核通过</el-button>
                         <el-button type="danger" plain class="state-danger-button">审核拒绝</el-button>
@@ -394,5 +395,8 @@ const grounding=ref('是')
 }
 :deep(.el-drawer){
     width:40% !important
+}
+.btn-right :deep(.el-form-item__content){
+    justify-content:flex-end;
 }
 </style>

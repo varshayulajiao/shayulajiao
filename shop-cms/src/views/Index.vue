@@ -1,6 +1,7 @@
 <template>
     <div class="common-layout">
         <el-container>
+            
             <el-header>
                 <div class="header-left">
                 <h2 class="header-h2">电商管理后台</h2>
@@ -62,9 +63,10 @@
 
             </el-header>
             <el-container>
-                <el-aside width="200px">
+                <el-affix>
+                <el-aside width="auto">
                     <el-menu default-active="/home" class="el-menu-vertical-demo" :collapse="isCollapse" @open="handleOpen"
-                        @close="handleClose" router>
+                        @close="handleClose" router >
                         <!-- 主控台 home -->
                         <el-sub-menu index="/index">
                             <template #title>
@@ -127,6 +129,7 @@
                         </el-sub-menu>
                     </el-menu>
                 </el-aside>
+            </el-affix>
                 <el-main>
                     <!-- 导航标签 -->
                     <div class="main-tabs">
@@ -302,9 +305,16 @@ const screen=()=>{
     overflow: unset;
     background: #f1f1f1;
 }
+.el-affix{
+    height:calc(100vh - 60px);
+    background: #f1f1f1;
+}
+.el-affix>div{
+    height: 100%;
+}
 .el-menu{
     height: 100%;
-    box-shadow: 5px 0px 2px rgba(195, 192, 192, 0.1);
+    box-shadow: 5px 0px 2px rgba(195, 192, 192, 0.1)
 }
 .menu-lockBox{
     margin-left: 50px;
@@ -378,4 +388,7 @@ const screen=()=>{
 :deep(.el-tabs--card>.el-tabs__header .el-tabs__nav){
     border: 0;
 }
+/* .el-menu span{
+    width: 200px;
+} */
 </style>
