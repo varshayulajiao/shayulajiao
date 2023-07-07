@@ -3,7 +3,7 @@
         <el-card shadow="never">
             <template #header>
                 <div class="card-header">
-                    <el-form label-width="120px">
+                    <el-form label-width="120px" class="form-box">
                         <el-form-item label="关键词">
                             <div class="form-left">
                                 <el-input v-model="keyWords" placeholder="手机号/邮箱/会员昵称" />
@@ -35,7 +35,7 @@
                 </el-table-column>
                 <el-table-column label="操作" fixed="right" width="180px">
                     <template #default="scope" class="table-foot">
-                        <el-button type="primary" link @click="handleDrawer">修改</el-button>
+                        <el-button type="primary" link @click="handleDrawer(scope.$index)">修改</el-button>
                         <el-popconfirm title="是否要删除该记录?" @confirm="handlerem(scope.$index)">
                             <template #reference>
                                 <el-button type="primary" link>删除</el-button>
@@ -43,14 +43,59 @@
                         </el-popconfirm>
                     </template>
                 </el-table-column>
-                 
+
             </el-table>
-           <el-pagination background layout="prev, pager, next" :total="1000" />      
-         
-        </el-card> 
-       
-                    
-         
+            <el-drawer v-for="item in tableData" v-model="item.drawer" title="修改">
+                <el-form label-width="120px" class="demo-ruleForm" status-icon>
+                    <el-form-item label="用户名">
+                        <el-input type="text" v-model="tableData[formIndex].username" />
+                    </el-form-item>
+                    <el-form-item label="密码">
+                        <el-input type="password" v-model="tableData[formIndex].password" />
+                    </el-form-item>
+                    <el-form-item label="昵称">
+                        <el-input type="text" v-model="tableData[formIndex].username" />
+                    </el-form-item>
+                    <el-form-item label="头像">
+                        <el-upload class="avatar-uploader"
+                            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" :show-file-list="false"
+                            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                            <el-icon v-else class="avatar-uploader-icon">
+                                <Plus />
+                            </el-icon>
+                        </el-upload>
+                    </el-form-item>
+                    <!-- 修改抽屉的下拉选择框 -->
+                    <el-form-item label="会员等级">
+                        <el-select v-model="userLevel" class="m-2" placeholder="请选择会员等级" size="large">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="手机">
+                        <el-input type="text" v-model="tableData[formIndex].telephone" />
+                    </el-form-item>
+                    <el-form-item label="邮箱">
+                        <el-input type="text" v-model="tableData[formIndex].email" />
+                    </el-form-item>
+                    <el-form-item label="状态">
+                        <el-switch v-model="switchValue" />
+                    </el-form-item>
+
+                </el-form>
+                <template #footer>
+                    <div style="flex: auto">
+                        <el-button type="primary">提交</el-button>
+                        <el-button>取消</el-button>
+                    </div>
+                </template>
+            </el-drawer>
+            <el-pagination background layout="prev, pager, next" :total="1000" />
+
+        </el-card>
+
+
+
     </div>
 </template>
 
@@ -59,10 +104,15 @@ import ListHeader from '../components/ListHeader.vue'
 import { ref } from 'vue';
 const keyWords = ref('')
 const userLevel = ref('')
+const formIndex = ref('')
+const switchValue = ref(false)
+const imageUrl = ref('')
 const onSubmit = () => {
 
 }
-const handleDrawer = () => {
+const handleDrawer = (index) => {
+    tableData.value[index].drawer = true
+    formIndex.value = index
 
 }
 const handlerem = (index) => {
@@ -74,36 +124,60 @@ const tableData = ref([
         userlevel: '黄金会员',
         time: '注册时间:2023-07-06 10:28:26',
         onoff: false,
+        drawer: false,
+        password: '',
+        telephone: '13112341234',
+        email: ''
     },
     {
         username: '小明',
         userlevel: '黄金会员',
         time: '注册时间:2023-07-06 10:28:26',
         onoff: false,
+        drawer: false,
+        password: '',
+        telephone: '13112341234',
+        email: ''
     },
     {
         username: '小明',
         userlevel: '黄金会员',
         time: '注册时间:2023-07-06 10:28:26',
         onoff: false,
+        drawer: false,
+        password: '',
+        telephone: '13112341234',
+        email: ''
     },
     {
         username: '小明',
         userlevel: '黄金会员',
         time: '注册时间:2023-07-06 10:28:26',
         onoff: false,
+        drawer: false,
+        password: '',
+        telephone: '13112341234',
+        email: ''
     },
     {
         username: '小明',
         userlevel: '黄金会员',
         time: '注册时间:2023-07-06 10:28:26',
         onoff: false,
+        drawer: false,
+        password: '',
+        telephone: '13112341234',
+        email: ''
     },
     {
         username: '小明',
         userlevel: '黄金会员',
         time: '注册时间:2023-07-06 10:28:26',
         onoff: false,
+        drawer: false,
+        password: '',
+        telephone: '13112341234',
+        email: ''
     },
 ])
 const options = ref([
@@ -135,20 +209,20 @@ const options = ref([
 </script>
 
 <style scoped>
-.el-form {
+.form-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.el-form .form-left {
+.form-box .form-left {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
 }
 
-.el-form .form-left .form-left-item {
+.form-box .form-left .form-left-item {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -161,13 +235,40 @@ const options = ref([
 
 }
 
-.el-form .form-left .form-left-item .el-select {
+.form-box .form-left .form-left-item .el-select {
     margin-left: 10px;
     width: 200px;
 }
-.el-pagination{
+
+.el-pagination {
     margin-top: 20px;
-  justify-content: center;
+    justify-content: center;
 }
 
+.avatar-uploader .avatar {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+.avatar-uploader :deep(.el-upload) {
+    border: 1px dashed var(--el-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader :deep(.el-upload:hover) {
+    border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+}
 </style>
