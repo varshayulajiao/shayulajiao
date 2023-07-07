@@ -128,22 +128,39 @@
                     </el-menu>
                 </el-aside>
                 <el-main>
-                    <el-tabs
-                    v-model="editableTabsValue"
-                    type="card"
-                    editable
-                    class="demo-tabs"
-                    @edit="handleTabsEdit"
-                >
+                    <!-- 导航标签 -->
+                    <div class="main-tabs">
+                        <el-tabs
+                        v-model="activeTab"
+                        type="card"
+                        class="demo-tabs"
+                        @tab-remove="removeTab"
+                        @tab-change="changeTab"
+                    >
                         <el-tab-pane
-                        v-for="item in editableTabs"
-                        :key="item.name"
+                        v-for="item in tabList"
+                        :key="item.path"
                         :label="item.title"
-                        :name="item.name"
+                        :name="item.path"
+                        :closable="item.path!='/home'"
                         >
-                        {{ item.content }}
+                        
                         </el-tab-pane>
-                </el-tabs>
+                    </el-tabs>
+                    <el-dropdown>
+                        <span class="el-dropdown-link">
+                        <el-icon class="el-icon--right">
+                            <arrow-down />
+                        </el-icon>
+                        </span>
+                        <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item @click="removeOther">关闭其他</el-dropdown-item>
+                            <el-dropdown-item @click="removeAll">全部关闭</el-dropdown-item>
+                        </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                    </div>
                     <router-view></router-view>
                 </el-main>
             </el-container>
@@ -152,7 +169,7 @@
 </template>
 
 <script setup>
-import {ref,reactive} from 'vue'
+import {ref,reactive,watch} from 'vue'
 import {useRouter} from 'vue-router'
 const router=useRouter()
 
@@ -204,49 +221,67 @@ const resetForm = (formEl) => {
   formEl.resetFields()
   drawer.value=false
 }
-//标签页部分 未完成功能
-let tabIndex = 2
-const editableTabsValue = ref('2')
-const editableTabs = ref([
+//标签页部分
+import {useRoute,onBeforeRouteUpdate} from 'vue-router'
+const route =useRoute()
+const activeTab = ref(route.path)
+const tabList = ref([
   {
-    title: 'Tab 1',
-    name: '1',
-    content: '',
-  },
-  {
-    title: 'Tab 2',
-    name: '2',
-    content: '',
-  },
-])
-
-const handleTabsEdit = (
-) => {
-  if (action === 'add') {
-    const newTabName = `${++tabIndex}`
-    editableTabs.value.push({
-      title: 'New Tab',
-      name: newTabName,
-      content: 'New Tab content',
-    })
-    editableTabsValue.value = newTabName
-  } else if (action === 'remove') {
-    const tabs = editableTabs.value
-    let activeName = editableTabsValue.value
-    if (activeName === targetName) {
-      tabs.forEach((tab, index) => {
-        if (tab.name === targetName) {
-          const nextTab = tabs[index + 1] || tabs[index - 1]
-          if (nextTab) {
-            activeName = nextTab.name
-          }
-        }
-      })
-    }
-
-    editableTabsValue.value = activeName
-    editableTabs.value = tabs.filter((tab) => tab.name !== targetName)
+    title: '后台首页',
+    path:'/home'
   }
+])
+watch(route,(newVal)=>{
+    activeTab.value=newVal.path
+})
+function addTab(tab){
+  let noTab=  tabList.value.findIndex((item)=>item.path==tab.path) ==-1
+  if(noTab){
+    tabList.value.push(tab)
+    console.log(tab)
+  }
+}
+onBeforeRouteUpdate((to,from)=>{
+    addTab({
+        title:to.meta.title,
+        path:to.path
+    })
+})
+const changeTab=(tab)=>{
+    activeTab.value=tab
+    router.push(tab)    
+}
+
+const removeTab = (t) => {
+    let tabs=tabList.value
+    let a=activeTab.value
+    if(a==t){
+        tabs.forEach((tab,index)=>{
+            if(tab.path==t){
+                const nextTab=tabs[index+1] || tabs[index-1]
+                if(nextTab){
+                    a=nextTab.path
+                }
+            }
+        })
+    }
+    activeTab.value=a
+    tabList.value=tabList.value.filter((tab)=>tab.path!=t)
+}
+const removeOther=()=>{
+    console.log(route)
+    const other=  tabList.value.filter((item)=>{
+        return item.path==route.path||item.path=='/home'
+    })
+    tabList.value=other
+}
+const removeAll=()=>{
+    tabList.value=[
+  {
+    title: '后台首页',
+    path:'/home'
+  }
+]
 }
 //网页全屏功能
 import screenfull from 'screenfull'
@@ -330,5 +365,9 @@ const screen=()=>{
 .screen-icon:hover{
     background: rgb(120, 167, 255);
 }
-
+.main-tabs{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 </style>

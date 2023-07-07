@@ -21,27 +21,45 @@ const router = createRouter({
         {
           path: 'home',
           name: 'home',
-          component: Home
+          component: Home,
+          meta:{
+            title:'后台主页'
+          }
         },{
           path: 'classmanage',
           name: 'classmanage',
-          component: ClassManage
+          component: ClassManage,
+          meta:{
+            title:'分类管理'
+          }
         },{
           path: 'goodsmanage',
           name: 'goodsmanage',
-          component: GoodsManage
+          component: GoodsManage,
+          meta:{
+            title:'商品管理'
+          }
         },{
           path: 'ordermanage',
           name: 'ordermanage',
-          component: OrderManage
+          component: OrderManage,
+          meta:{
+            title:'订单管理'
+          }
         },{
           path: 'usersmanage',
           name: 'usersmanage',
-          component: UsersManage
+          component: UsersManage,
+          meta:{
+            title:'用户管理'
+          }
         },{
           path: 'userslevel',
           name: 'userslevel',
-          component: UsersLevel
+          component: UsersLevel,
+          meta:{
+            title:'用户等级'
+          }
         }
       ]
     },{
