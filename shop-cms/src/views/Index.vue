@@ -1,7 +1,6 @@
 <template>
     <div class="common-layout">
         <el-container>
-            
             <el-header>
                 <div class="header-left">
                 <h2 class="header-h2">电商管理后台</h2>
@@ -63,10 +62,9 @@
 
             </el-header>
             <el-container>
-                <el-affix>
+                
                 <el-aside width="auto">
-                    <el-menu default-active="/home" class="el-menu-vertical-demo" :collapse="isCollapse" @open="handleOpen"
-                        @close="handleClose" router >
+                    <el-menu default-active="/home" class="el-menu-vertical-demo" :collapse="isCollapse"  router >
                         <!-- 主控台 home -->
                         <el-sub-menu index="/index">
                             <template #title>
@@ -114,7 +112,7 @@
                                 <span>会员等级</span>
                             </el-menu-item>
                         </el-sub-menu>
-                        <!-- 订单管理 ordermanage -->
+                        <!-- 订单管理 ordermanage comment -->
                         <el-sub-menu index="/order">
                             <template #title>
                                 <el-icon>
@@ -131,7 +129,7 @@
                                 <span>评论管理</span>
                             </el-menu-item>
                         </el-sub-menu>
-                        <!-- 其他模块 -->
+                        <!-- 其他模块 notice-->
                         <el-sub-menu index="/others">
                             <template #title>
                                 <el-icon>
@@ -146,7 +144,6 @@
                         </el-sub-menu>
                     </el-menu>
                 </el-aside>
-            </el-affix>
                 <el-main>
                     <!-- 导航标签 -->
                     <div class="main-tabs">
@@ -192,16 +189,10 @@
 import {ref,reactive,watch} from 'vue'
 import {useRouter} from 'vue-router'
 const router=useRouter()
-
+//菜单开启关闭响应式数据
 const isCollapse=ref(false)
 const drawer=ref(false)
 
-const handleOpen=()=>{
-
-}
-const handleClose=()=>{
-
-}
 const reload=()=>{
     location.reload()
 }
@@ -241,9 +232,10 @@ const resetForm = (formEl) => {
   formEl.resetFields()
   drawer.value=false
 }
-//标签页部分
+//标签页部分--tabs
 import {useRoute,onBeforeRouteUpdate} from 'vue-router'
 const route =useRoute()
+router.push('/home')//进入index页直接显示home页内容
 const activeTab = ref(route.path)
 const tabList = ref([
   {
@@ -349,7 +341,9 @@ const screen=()=>{
     color:white
 }
 .el-main{
-    background: #f1f1f1;
+    background: #f1f1f1;    
+    overflow: scroll;
+    height: calc(100vh - 60px);
 }
 .reload-icon{
     color:white;
@@ -405,7 +399,7 @@ const screen=()=>{
 :deep(.el-tabs--card>.el-tabs__header .el-tabs__nav){
     border: 0;
 }
-/* .el-menu span{
+.el-menu span{
     width: 200px;
-} */
+}
 </style>
