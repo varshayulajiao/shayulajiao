@@ -126,6 +126,23 @@
                                 <el-icon><Reading /></el-icon>
                                 <span>订单管理</span>
                             </el-menu-item>
+                            <el-menu-item index="/comment">
+                                <el-icon><Reading /></el-icon>
+                                <span>评论管理</span>
+                            </el-menu-item>
+                        </el-sub-menu>
+                        <!-- 其他模块 -->
+                        <el-sub-menu index="/others">
+                            <template #title>
+                                <el-icon>
+                                    <Box />
+                                </el-icon>
+                                <span>其他模块</span>
+                            </template>
+                            <el-menu-item index="/notice">
+                                <el-icon><Reading /></el-icon>
+                                <span>公告管理</span>
+                            </el-menu-item>
                         </el-sub-menu>
                     </el-menu>
                 </el-aside>

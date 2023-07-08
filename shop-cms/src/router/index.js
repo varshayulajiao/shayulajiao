@@ -9,6 +9,8 @@ const OrderManage=()=>import('../views/OrderManage.vue')
 const UsersManage=()=>import('../views/UsersManage.vue')
 const UsersLevel=()=>import('../views/UsersLevel.vue')
 const Home=()=>import('../views/Home.vue')
+const Comment=()=>import('../views/Comment.vue')
+const Notice=()=>import('../views/Notice.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,6 +61,20 @@ const router = createRouter({
           component: UsersLevel,
           meta:{
             title:'用户等级'
+          }
+        },{
+          path: 'comment',
+          name: 'comment',
+          component: Comment,
+          meta:{
+            title:'评论管理'
+          }
+        },{
+          path: 'notice',
+          name: 'notice',
+          component: Notice,
+          meta:{
+            title:'公告管理'
           }
         }
       ]
