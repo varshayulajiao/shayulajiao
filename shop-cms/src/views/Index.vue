@@ -1,7 +1,6 @@
 <template>
     <div class="common-layout">
         <el-container>
-            
             <el-header>
                 <div class="header-left">
                 <h2 class="header-h2">电商管理后台</h2>
@@ -63,10 +62,9 @@
 
             </el-header>
             <el-container>
-                <el-affix>
+                
                 <el-aside width="auto">
-                    <el-menu default-active="/home" class="el-menu-vertical-demo" :collapse="isCollapse" @open="handleOpen"
-                        @close="handleClose" router >
+                    <el-menu default-active="/home" class="el-menu-vertical-demo" :collapse="isCollapse"  router >
                         <!-- 主控台 home -->
                         <el-sub-menu index="/index">
                             <template #title>
@@ -114,7 +112,7 @@
                                 <span>会员等级</span>
                             </el-menu-item>
                         </el-sub-menu>
-                        <!-- 订单管理 ordermanage -->
+                        <!-- 订单管理 ordermanage comment -->
                         <el-sub-menu index="/order">
                             <template #title>
                                 <el-icon>
@@ -127,26 +125,25 @@
                                 <span>订单管理</span>
                             </el-menu-item>
                             <el-menu-item index="/comment">
-                                <el-icon><Reading /></el-icon>
+                                <el-icon><ChatDotSquare /></el-icon>
                                 <span>评论管理</span>
                             </el-menu-item>
                         </el-sub-menu>
-                        <!-- 其他模块 -->
+                        <!-- 其他模块 notice-->
                         <el-sub-menu index="/others">
                             <template #title>
                                 <el-icon>
-                                    <Box />
+                                    <Cloudy />
                                 </el-icon>
                                 <span>其他模块</span>
                             </template>
                             <el-menu-item index="/notice">
-                                <el-icon><Reading /></el-icon>
+                                <el-icon><Notification /></el-icon>
                                 <span>公告管理</span>
                             </el-menu-item>
                         </el-sub-menu>
                     </el-menu>
                 </el-aside>
-            </el-affix>
                 <el-main>
                     <!-- 导航标签 -->
                     <div class="main-tabs">
@@ -158,7 +155,7 @@
                         @tab-change="changeTab"
                     >
                         <el-tab-pane
-                        v-for="item in tabList"
+                        v-for="item in routePath.tabList"
                         :key="item.path"
                         :label="item.title"
                         :name="item.path"
@@ -192,16 +189,10 @@
 import {ref,reactive,watch} from 'vue'
 import {useRouter} from 'vue-router'
 const router=useRouter()
-
+//菜单开启关闭响应式数据
 const isCollapse=ref(false)
 const drawer=ref(false)
 
-const handleOpen=()=>{
-
-}
-const handleClose=()=>{
-
-}
 const reload=()=>{
     location.reload()
 }
@@ -241,23 +232,25 @@ const resetForm = (formEl) => {
   formEl.resetFields()
   drawer.value=false
 }
-//标签页部分
+//标签页部分--tabs
 import {useRoute,onBeforeRouteUpdate} from 'vue-router'
+import useRoutePath from '../stores/path'
+const routePath=useRoutePath()
 const route =useRoute()
+if(routePath.path){
+    router.push(routePath.path)
+}else{
+    router.push('/home')
+}
 const activeTab = ref(route.path)
-const tabList = ref([
-  {
-    title: '后台首页',
-    path:'/home'
-  }
-])
 watch(route,(newVal)=>{
     activeTab.value=newVal.path
+    routePath.NowPath(newVal.path)
 })
 function addTab(tab){
-  let noTab=  tabList.value.findIndex((item)=>item.path==tab.path) ==-1
+  let noTab=  routePath.tabList.findIndex((item)=>item.path==tab.path) ==-1
   if(noTab){
-    tabList.value.push(tab)
+    routePath.PushTabList(tab)
     console.log(tab)
   }
 }
@@ -273,7 +266,7 @@ const changeTab=(tab)=>{
 }
 
 const removeTab = (t) => {
-    let tabs=tabList.value
+    let tabs=routePath.tabList
     let a=activeTab.value
     if(a==t){
         tabs.forEach((tab,index)=>{
@@ -286,22 +279,22 @@ const removeTab = (t) => {
         })
     }
     activeTab.value=a
-    tabList.value=tabList.value.filter((tab)=>tab.path!=t)
+    routePath.NowTabList(routePath.tabList.filter((tab)=>tab.path!=t))
 }
 const removeOther=()=>{
     console.log(route)
-    const other=  tabList.value.filter((item)=>{
+    const other=  routePath.tabList.filter((item)=>{
         return item.path==route.path||item.path=='/home'
     })
-    tabList.value=other
+    routePath.NowTabList(other)
 }
 const removeAll=()=>{
-    tabList.value=[
+    routePath.NowTabList([
   {
     title: '后台首页',
     path:'/home'
   }
-]
+])
 }
 //网页全屏功能
 import screenfull from 'screenfull'
@@ -349,7 +342,9 @@ const screen=()=>{
     color:white
 }
 .el-main{
-    background: #f1f1f1;
+    background: #f1f1f1;    
+    overflow: scroll;
+    height: calc(100vh - 60px);
 }
 .reload-icon{
     color:white;
@@ -405,7 +400,7 @@ const screen=()=>{
 :deep(.el-tabs--card>.el-tabs__header .el-tabs__nav){
     border: 0;
 }
-/* .el-menu span{
+.el-menu span{
     width: 200px;
-} */
+}
 </style>
