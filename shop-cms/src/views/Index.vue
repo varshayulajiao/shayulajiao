@@ -125,7 +125,7 @@
                                 <span>订单管理</span>
                             </el-menu-item>
                             <el-menu-item index="/comment">
-                                <el-icon><Reading /></el-icon>
+                                <el-icon><ChatDotSquare /></el-icon>
                                 <span>评论管理</span>
                             </el-menu-item>
                         </el-sub-menu>
@@ -133,12 +133,12 @@
                         <el-sub-menu index="/others">
                             <template #title>
                                 <el-icon>
-                                    <Box />
+                                    <Cloudy />
                                 </el-icon>
                                 <span>其他模块</span>
                             </template>
                             <el-menu-item index="/notice">
-                                <el-icon><Reading /></el-icon>
+                                <el-icon><Notification /></el-icon>
                                 <span>公告管理</span>
                             </el-menu-item>
                         </el-sub-menu>
@@ -155,7 +155,7 @@
                         @tab-change="changeTab"
                     >
                         <el-tab-pane
-                        v-for="item in tabList"
+                        v-for="item in routePath.tabList"
                         :key="item.path"
                         :label="item.title"
                         :name="item.path"
@@ -234,22 +234,23 @@ const resetForm = (formEl) => {
 }
 //标签页部分--tabs
 import {useRoute,onBeforeRouteUpdate} from 'vue-router'
+import useRoutePath from '../stores/path'
+const routePath=useRoutePath()
 const route =useRoute()
-router.push('/home')//进入index页直接显示home页内容
+if(routePath.path){
+    router.push(routePath.path)
+}else{
+    router.push('/home')
+}
 const activeTab = ref(route.path)
-const tabList = ref([
-  {
-    title: '后台首页',
-    path:'/home'
-  }
-])
 watch(route,(newVal)=>{
     activeTab.value=newVal.path
+    routePath.NowPath(newVal.path)
 })
 function addTab(tab){
-  let noTab=  tabList.value.findIndex((item)=>item.path==tab.path) ==-1
+  let noTab=  routePath.tabList.findIndex((item)=>item.path==tab.path) ==-1
   if(noTab){
-    tabList.value.push(tab)
+    routePath.PushTabList(tab)
     console.log(tab)
   }
 }
@@ -265,7 +266,7 @@ const changeTab=(tab)=>{
 }
 
 const removeTab = (t) => {
-    let tabs=tabList.value
+    let tabs=routePath.tabList
     let a=activeTab.value
     if(a==t){
         tabs.forEach((tab,index)=>{
@@ -278,22 +279,22 @@ const removeTab = (t) => {
         })
     }
     activeTab.value=a
-    tabList.value=tabList.value.filter((tab)=>tab.path!=t)
+    routePath.NowTabList(routePath.tabList.filter((tab)=>tab.path!=t))
 }
 const removeOther=()=>{
     console.log(route)
-    const other=  tabList.value.filter((item)=>{
+    const other=  routePath.tabList.filter((item)=>{
         return item.path==route.path||item.path=='/home'
     })
-    tabList.value=other
+    routePath.NowTabList(other)
 }
 const removeAll=()=>{
-    tabList.value=[
+    routePath.NowTabList([
   {
     title: '后台首页',
     path:'/home'
   }
-]
+])
 }
 //网页全屏功能
 import screenfull from 'screenfull'
