@@ -18,7 +18,7 @@
                 />
                 <el-dropdown >
                     <span class="el-dropdown-link">
-                    <span>username:</span>
+                    <span>欢迎您:{{ Login.username }}</span>
                     <el-icon class="el-icon--right" style="color:white"><arrow-down /></el-icon>
                     </span>
                     <template #dropdown>
@@ -112,6 +112,17 @@
                                 <span>会员等级</span>
                             </el-menu-item>
                         </el-sub-menu>
+                        <!-- 管理员管理  administrators-manage-->
+                        <el-sub-menu index="/admin">
+                            <template #title>
+                                <el-icon><Management /></el-icon>
+                                <span>管理员管理</span>
+                            </template>
+                            <el-menu-item index="/administraorsmanage">
+                                <el-icon><Avatar /></el-icon>
+                                <span>管理员管理</span>
+                            </el-menu-item>
+                        </el-sub-menu>
                         <!-- 订单管理 ordermanage comment -->
                         <el-sub-menu index="/order">
                             <template #title>
@@ -188,6 +199,7 @@
 <script setup>
 import {ref,reactive,watch} from 'vue'
 import {useRouter} from 'vue-router'
+import { ElMessage } from 'element-plus'
 const router=useRouter()
 //菜单开启关闭响应式数据
 const isCollapse=ref(false)
@@ -196,8 +208,21 @@ const drawer=ref(false)
 const reload=()=>{
     location.reload()
 }
+//退出登录
+import useLogin from '../stores/user.js'
+const Login=useLogin()
 const handleRemoveLogin=()=>{
+    ElMessage.success('退出登录成功')
+    Login.NowToken('')
+    Login.NowUsername('')
     router.push('/login')
+    routePath.NowPath('')
+    routePath.NowTabList([
+          {
+            title: '后台首页',
+            path:'/home'
+          }
+        ])
 }
 //修改密码表单部分 还差新密码和重复密码验证是否相同功能
 const ruleFormRef=ref(null)

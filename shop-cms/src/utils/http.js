@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useUsersStore } from '../stores/users';
+/* import { useUsersStore } from '../stores/users'; */
 //通用功能
 const instance = axios.create({
   //localhost:8080/api/ 
@@ -11,8 +11,8 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  const useStore = useUsersStore()
- config.headers.Authorization= useStore.token
+  /* const useStore = useUsersStore()
+ config.headers.Authorization= useStore.token */
   return config;
 }, function (error) {
   // 对请求错误做些什么

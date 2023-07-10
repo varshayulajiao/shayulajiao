@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import useLogin from '../stores/user'
 
 //懒加载
 const Index=()=>import('../views/Index.vue')
@@ -11,6 +12,7 @@ const UsersLevel=()=>import('../views/UsersLevel.vue')
 const Home=()=>import('../views/Home.vue')
 const Comment=()=>import('../views/Comment.vue')
 const Notice=()=>import('../views/Notice.vue')
+const AdministraorsManage=()=>import('../views/AdministraorsManage.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +21,10 @@ const router = createRouter({
       path: '/',
       name: 'index',
       component: Index,
+      meta:{
+        auth:true
+      }
+      ,
       children:[
         {
           path: 'home',
@@ -76,6 +82,13 @@ const router = createRouter({
           meta:{
             title:'公告管理'
           }
+        },{
+          path: 'administraorsmanage',
+          name: 'administraorsmanage',
+          component: AdministraorsManage,
+          meta:{
+            title:'管理员管理'
+          }
         }
       ]
     },{
@@ -84,6 +97,19 @@ const router = createRouter({
       component: Login
     }
   ]
+})
+
+router.beforeEach((to,from,next)=>{
+      if(to.meta.auth){
+        const Login=useLogin()
+          if(Login.token){
+            next()
+          }else{
+            next('/login')
+          }
+      }else{
+        next()
+      }
 })
 
 export default router
