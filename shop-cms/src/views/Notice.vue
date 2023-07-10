@@ -1,6 +1,11 @@
 <template>
+<<<<<<< HEAD
+    <el-card>
+        
+=======
     <el-main class="a3">
 
+>>>>>>> caa659e74e20b431ac8a1ad4ec3d04bb328f3219
         <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
             新增
         </el-button>
@@ -19,15 +24,28 @@
         <el-icon class="a1">
             <Refresh />
         </el-icon>
+<<<<<<< HEAD
+        <el-table :data="tableData">
+            <el-table-column prop="date" label="公告标题" />
+            <el-table-column prop="name" label="发布时间" />
+=======
 
         <el-table :data="tableData">
             <el-table-column prop="date" label="公告标题" width="300" />
+<<<<<<< HEAD
             <el-table-column prop="name" label="发布时间"  align="center"/>
             <el-table-column label="操作" align="right">
                 <template #default="scope">
                     <el-button plain type="primary" style="margin-left: 16px" @click="handleModifyDrawer(scope.$index,scope.row)">修改</el-button>
                     <el-button @click="handleCarouselDrawer(scope.$index,scope.row)" >删除</el-button>
                 </template>
+=======
+            <el-table-column prop="name" label="发布时间" width="180" />
+>>>>>>> caa659e74e20b431ac8a1ad4ec3d04bb328f3219
+            <el-table-column label="操作">
+                <el-button><span class="a2">修改</span></el-button>
+                <el-button><span class="a2">删除</span></el-button>
+>>>>>>> 616f25f88956bf6223ec824cf20de9686dac012f
             </el-table-column>
         </el-table>
 
@@ -45,7 +63,7 @@
 
         <el-pagination background layout="prev, pager, next" :total="10" class="a4">
         </el-pagination>
-    </el-main>
+    </el-card>
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
