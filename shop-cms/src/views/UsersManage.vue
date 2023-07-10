@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-card shadow="never">
+        <el-card >
             <template #header>
                 <div class="card-header">
                     <el-form label-width="120px" class="form-box">
@@ -24,21 +24,21 @@
                     <ListHeader />
                 </div>
             </template>
-            <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column label="会员" width="380px" >
+            <el-table :data="tableData" stripe table-layout="auto">
+                <el-table-column label="会员"  >
                     <template #default="scope">
                        <div>{{ scope.row.username }}</div>
                        <div style="font-size: 12px;">ID：{{ scope.row.id }}</div>
                     </template>
-                </el-table-column>
-                <el-table-column prop="userlevel" label="会员等级" width="500px" />
-                <el-table-column prop="time" label="登陆注册" width="400px" />
+                </el-table-column>  
+                <el-table-column prop="userlevel" label="会员等级"  />
+                <el-table-column prop="time" label="登陆注册"  />
                 <el-table-column prop="onoff" label="状态">
                     <template #default="scope">
                         <el-switch v-model="scope.row.onOff" />
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" fixed="right" width="180px">
+                <el-table-column label="操作" fixed="right" >
                     <template #default="scope" class="table-foot">
                         <el-button type="primary" link @click="handleDrawer(scope.$index)">修改</el-button>
                         <el-popconfirm title="是否要删除该记录?" @confirm="handlerem(scope.$index)">

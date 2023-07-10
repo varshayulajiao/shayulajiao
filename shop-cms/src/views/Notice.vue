@@ -1,5 +1,5 @@
 <template>
-    <el-main class="a3">
+    <el-card>
         
         <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
             新增
@@ -18,9 +18,9 @@
         <el-icon class="a1">
             <Refresh />
         </el-icon>
-        <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="公告标题" width="180" />
-            <el-table-column prop="name" label="发布时间" width="180" />
+        <el-table :data="tableData">
+            <el-table-column prop="date" label="公告标题" />
+            <el-table-column prop="name" label="发布时间" />
             <el-table-column label="操作">
                 <el-button><span class="a2">修改</span></el-button>
                 <el-button><span class="a2">删除</span></el-button>
@@ -28,7 +28,7 @@
         </el-table>
         <el-pagination background layout="prev, pager, next" :total="20" class="a4">
         </el-pagination>
-    </el-main>
+    </el-card>
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'

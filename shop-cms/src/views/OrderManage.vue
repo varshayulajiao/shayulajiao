@@ -62,56 +62,86 @@
             <el-table
                 ref="multipleTableRef"
                 :data="tableData"
-                style="width: 100%"
                 @selection-change="handleSelectionChange"
                 
             >
-                <el-table-column type="selection" width="55" />
-                <el-table-column label="商品" width="350">
+                <el-table-column type="selection" />
+                <el-table-column label="商品" align="left" min-width="125">
                 <template #default="scope">
                     <div class="all">
                         <div class="top">
                             <div class="top-left">
-                                <P>订单号</P>
-                            <small>20211209234311144192</small>
+                                <p>订单号</p>
+                            <small>{{scope.row.orderNumber}}</small>
                             </div>
                             <div class="top-right">
-                                <P>下单时间</P>
-                            <small>2021-12-09 23:43:11</small>
+                                <p>下单时间</p>
+                            <small>{{ scope.row.time }}</small>
                             </div>
                         </div>
                         <div class="bottom">
                             <div class="img" style="width:30px;height: 30px;">
-                                <img src="https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/5984928facd569ef906becba3469810b.png" alt="" style="width:30px;height: 30px;">
+                                <img :src="scope.row.goodsUrl" alt="" style="width:30px;height: 30px;">
                             </div>
-                            <p class="text-blue-500">小米-百支酒店风抱枕套</p>
+                            <p class="text-blue-500">{{ scope.row.goodsname }}</p>
                         </div>
                     </div>
                 </template>
                 </el-table-column>
-                <el-table-column label="实付款" property="xxx" width="100"></el-table-column>
-                <el-table-column label="买家" width="100" >
+                <el-table-column label="实付款" property="price" ></el-table-column>
+                <el-table-column label="买家"  >
                         <template #default="scope">
-                            <p>user2</p>
-                            <small>(用户ID：4)</small>
+                            <p>{{scope.row.users}}</p>
+                            <small>(用户ID:{{ scope.row.userId }})</small>
                         </template>
                 </el-table-column>
-                <el-table-column label="交易状态" width="150">
+                <el-table-column label="交易状态" >
                     <template #default="scope">
                         <div style="margin-bottom: 5px;">付款状态：
-                            <el-tag>支付宝支付</el-tag>
+                            <el-tag>{{ scope.row.payState }}</el-tag>
                         </div>
-                        <div style="margin-bottom: 5px;">发货状态：<el-tag class="ml-2" type="info">未发货</el-tag></div>
-                        <div>收货状态：<el-tag class="ml-2" type="info">未收货</el-tag></div>
+                        <div style="margin-bottom: 5px;">发货状态：<el-tag class="ml-2" type="info">{{ scope.row.sendGoodsState }}</el-tag></div>
+                        <div>收货状态：<el-tag class="ml-2" type="info">{{ scope.row.takeGoodsState }}</el-tag></div>
                      </template>
                 </el-table-column>
-                <el-table-column label="操作" width="450"> 
+                <el-table-column label="操作" >     
                     <template #default="scope" >
-                        <a class="btn-text" @click="handleModifyDrawer(scope.$index,scope.row)">订单详情</a>
+                        <a class="btn-text" @click="handleOrderDetails(scope.$index,scope.row)">订单详情</a>
                         <a class="btn-text" @click="handleCarouselDrawer(scope.$index,scope.row)">订单发货</a>
                     </template>
                 </el-table-column>
             </el-table>
+            <!-- 订单详情抽屉 -->
+            <el-drawer
+                    v-for="item in tableData"
+                    v-model="item.OrderDetailsDrawer"
+                    title="订单详情"
+                >
+                <el-card class="box-card">
+                    <template #header>
+                    <div class="card-header">
+                        <span>订单详情</span>
+                    </div>
+                    </template>
+                    <div>
+                        <p>订单号:{{item.orderNumber}}</p>
+                        <p>付款方式:{{item.payState}}</p>
+                        <p>下单时间:{{item.time}}</p>
+                    </div>
+                </el-card>
+                <el-card class="box-card">
+                    <template #header>
+                    <div class="card-center">
+                        <span>商品信息</span>
+                    </div>
+                    </template>
+                    <div>
+                        <p>订单号:{{item.orderNumber}}</p>
+                        <p>付款方式:{{item.payState}}</p>
+                        <p>下单时间:{{item.time}}</p>
+                    </div>
+                </el-card>
+            </el-drawer>
         </el-card>
 </template>
 
@@ -132,9 +162,9 @@ const handleClick=()=>{
 }
 //导航分类--按钮部分
 const isShow=ref(false)
-const submitForm = async (formEl) => {
+const submitForm =  (formEl) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+   formEl.validate((valid, fields) => {
     if (valid) {
       console.log('submit!',ruleForm)
     } else {
@@ -155,29 +185,118 @@ const handleSelectionChange = (val) => {
   multipleSelection.value = val
 }
 
-const tableData = [
+//表格渲染的数据
+const tableData = ref([
   {
-    xxx:'0.10'
+    price:'0.10',
+    orderNumber:20211209234311144192,
+    time:'2021-12-09 23:43:11',
+    goodsUrl:'https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/5984928facd569ef906becba3469810b.png',
+    goodsname:'小米-百支酒店风抱枕套',
+    users:'user2',
+    userId:'3',
+    payState:'支付宝支付',
+    takeGoodsState:'未收货',
+    sendGoodsState:'未发货',
+    OrderDetailsDrawer:false,
+    userAddr:'大连设计城',
+    phone:'15012341234'
   },
   {
-   xxx:'0.10'
+   price:'0.10',
+   orderNumber:20211209234311144192,
+   time:'2021-12-09 23:43:11',
+   goodsUrl:'https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/5984928facd569ef906becba3469810b.png',
+   goodsname:'小米-百支酒店风抱枕套',
+   users:'user2',
+   userId:'3',
+   payState:'未支付',
+   takeGoodsState:'未收货',
+   sendGoodsState:'未发货',
+   OrderDetailsDrawer:false,
+   userAddr:'大连设计城',
+   phone:'15012341234'
   },
   {
-    xxx:'0.10'
+    price:'0.10',
+    orderNumber:20211209234311144192,
+    time:'2021-12-09 23:43:11',
+    goodsUrl:'https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/5984928facd569ef906becba3469810b.png',
+    goodsname:'小米-百支酒店风抱枕套',
+    users:'user2',
+    userId:'3',
+    payState:'支付宝支付',
+    takeGoodsState:'未收货',
+    sendGoodsState:'未发货',
+    OrderDetailsDrawer:false,
+    userAddr:'大连设计城',
+    phone:'15012341234'
   },
   {
-    xxx:'0.10'
+    price:'0.10',
+    orderNumber:20211209234311144192,
+    time:'2021-12-09 23:43:11',
+    goodsUrl:'https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/5984928facd569ef906becba3469810b.png',
+    goodsname:'小米-百支酒店风抱枕套',
+    users:'user2',
+    userId:'3',
+    payState:'支付宝支付',
+    takeGoodsState:'未收货',
+    sendGoodsState:'未发货',
+    OrderDetailsDrawer:false,
+    userAddr:'大连设计城',
+    phone:'15012341234'
   },
   {
-    xxx:'0.10'
+    price:'0.10',
+    orderNumber:20211209234311144192,
+    time:'2021-12-09 23:43:11',
+    goodsUrl:'https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/5984928facd569ef906becba3469810b.png',
+    goodsname:'小米-百支酒店风抱枕套',
+    users:'user2',
+    userId:'3',
+    payState:'支付宝支付',
+    takeGoodsState:'未收货',
+    sendGoodsState:'未发货',
+    OrderDetailsDrawer:false,
+    userAddr:'大连设计城',
+    phone:'15012341234'
   },
   {
-    xxx:'0.10'
+    price:'0.10',
+    orderNumber:20211209234311144192,
+    time:'2021-12-09 23:43:11',
+    goodsUrl:'https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/5984928facd569ef906becba3469810b.png',
+    goodsname:'小米-百支酒店风抱枕套',
+    users:'user2',
+    userId:'3',
+    payState:'支付宝支付',
+    takeGoodsState:'未收货',
+    sendGoodsState:'未发货',    
+    OrderDetailsDrawer:false,
+    userAddr:'大连设计城',
+    phone:'15012341234'
   },
   {
-    xxx:'0.10'
+    price:'0.10',
+    orderNumber:20211209234311144192,
+    time:'2021-12-09 23:43:11',
+    goodsUrl:'https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/5984928facd569ef906becba3469810b.png',
+    goodsname:'小米-百支酒店风抱枕套',
+    users:'user2',
+    userId:'3',
+    payState:'支付宝支付',
+    takeGoodsState:'未收货',
+    sendGoodsState:'未发货',
+    OrderDetailsDrawer:false,
+    userAddr:'大连设计城',
+    phone:'15012341234'
   },
-]
+])
+//订单详情抽屉
+const handleOrderDetails=(index,row)=>{
+    tableData.value[index].OrderDetailsDrawer=!tableData.value[index].OrderDetailsDrawer
+}
 </script>
 
 <style scoped>

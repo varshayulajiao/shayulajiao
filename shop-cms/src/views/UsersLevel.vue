@@ -4,16 +4,16 @@
             <template #header>
                 <ListHeader />
             </template>
-            <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column prop="userlevel" label="会员等级" width="380px" />
-                <el-table-column prop="discount" label="折扣率（%）" width="500px" />
-                <el-table-column prop="levelcount" label="等级序号" width="400px" />
+            <el-table :data="tableData" stripe table-layout="auto">
+                <el-table-column prop="userlevel" label="会员等级"  />
+                <el-table-column prop="discount" label="折扣率（%）"  />
+                <el-table-column prop="levelcount" label="等级序号"  />
                 <el-table-column prop="onoff" label="状态">
                     <template #default="scope">
                         <el-switch v-model="scope.row.onOff" />
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" fixed="right" width="180px">
+                <el-table-column label="操作" fixed="right" >
                     <template #default="scope" class="table-foot">
                         <el-button type="primary" link @click="handleDrawer(scope.$index)">修改</el-button>
                         <el-popconfirm title="是否要删除该记录?" @confirm="handlerem(scope.$index)">
