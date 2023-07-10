@@ -307,7 +307,6 @@ const removeTab = (t) => {
     routePath.NowTabList(routePath.tabList.filter((tab)=>tab.path!=t))
 }
 const removeOther=()=>{
-    console.log(route)
     const other=  routePath.tabList.filter((item)=>{
         return item.path==route.path||item.path=='/home'
     })
@@ -320,6 +319,7 @@ const removeAll=()=>{
     path:'/home'
   }
 ])
+activeTab.value='/home'
 }
 //网页全屏功能
 import screenfull from 'screenfull'
@@ -368,7 +368,7 @@ const screen=()=>{
 }
 .el-main{
     background: #f1f1f1;    
-    overflow: scroll;
+    overflow-y: scroll;
     height: calc(100vh - 60px);
 }
 .reload-icon{
