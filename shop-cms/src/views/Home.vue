@@ -291,7 +291,7 @@ myChart3.setOption({
     {
       name: '数量',
       type: 'bar',
-      data: [0,0,0, 0, 0, 7, 12, 15,10,8,0,3,0,25,20,10,0,0,0,0,0,0,0,0],
+      data: [0,0,0, 0, 0, 3, 6, 15,8,7,0,3,0,18,12,10,0,0,0,0,0,0,0,0],
       showBackground: true,
       backgroundStyle: {
         color: 'rgba(180, 180, 180, 0.2)'
