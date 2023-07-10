@@ -1,38 +1,52 @@
 <template>
+<<<<<<< HEAD
     <el-card>
         
+=======
+    <el-main class="a3">
+
+>>>>>>> caa659e74e20b431ac8a1ad4ec3d04bb328f3219
         <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
             新增
         </el-button>
 
-        <el-drawer v-model="drawer" title="I'm outer Drawer" size="50%">
+        <el-drawer v-model="drawer" title="新增" size="50%">
             <div>
-                <el-button @click="innerDrawer = true">Click me!</el-button>
-                <el-drawer v-model="innerDrawer" title="I'm inner Drawer" :append-to-body="true"
-                    :before-close="handleClose">
-                    <p>_(:зゝ∠)_</p>
-                </el-drawer>
+                <span style="color: red;">*</span>公告标题
+                <el-input v-model="input" placeholder="公告标题" />
+                <span style="color: red;">*</span>公告内容
+                <el-input v-model="input1" placeholder="公告内容" />
             </div>
         </el-drawer>
 
         <el-icon class="a1">
             <Refresh />
         </el-icon>
+<<<<<<< HEAD
         <el-table :data="tableData">
             <el-table-column prop="date" label="公告标题" />
             <el-table-column prop="name" label="发布时间" />
+=======
+
+        <el-table :data="tableData">
+            <el-table-column prop="date" label="公告标题" width="300" />
+            <el-table-column prop="name" label="发布时间" width="180" />
+>>>>>>> caa659e74e20b431ac8a1ad4ec3d04bb328f3219
             <el-table-column label="操作">
                 <el-button><span class="a2">修改</span></el-button>
                 <el-button><span class="a2">删除</span></el-button>
             </el-table-column>
         </el-table>
-        <el-pagination background layout="prev, pager, next" :total="20" class="a4">
+
+        <el-pagination background layout="prev, pager, next" :total="10" class="a4">
         </el-pagination>
     </el-card>
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
+const input = ref('')
+const input1 = ref('')
 
 const drawer = ref(false)
 const innerDrawer = ref(false)
@@ -115,5 +129,13 @@ const tableData = [
 
 .a4 {
     justify-content: center;
+}
+:deep(.el-table tr){
+display: flex;
+justify-content: space-between;
+width: 1310px;
+}
+:deep(.el-table tr th){
+    margin-right: 100px;
 }
 </style>
