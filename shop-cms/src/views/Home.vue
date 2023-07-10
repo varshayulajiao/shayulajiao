@@ -118,14 +118,18 @@
                         type="card"
                         class="demo-tabs"    
                     >
-                        <el-tab-pane label="近1个月" name="month">  
+                        <el-tab-pane label="近1个月" name="month">
+                           <div  ref="tabRef1" class="table-bar"></div>  
                         </el-tab-pane>
                         <el-tab-pane label="近1周" name="week">
+                            <div  ref="tabRef2" class="table-bar"></div>
                         </el-tab-pane>
                         <el-tab-pane label="近24小时" name="day"> 
+                            <div  ref="tabRef3" class="table-bar"></div>    
                         </el-tab-pane>
-                        <div ref="tabRef" class="table-bar">    
-                        </div>
+                       
+                        
+                       
                     </el-tabs>
                 </el-col>
                 <el-col :span="12">
@@ -204,9 +208,13 @@
 import {ref,watchEffect} from 'vue'
 import {useRouter} from 'vue-router'
 import * as echarts from 'echarts';
-const tabRef=ref()
-const activeName=ref('month')
-let myChart;
+const tabRef1=ref()
+const tabRef2=ref()
+const tabRef3=ref()
+const activeName=ref('week')
+let myChart1;
+let myChart2;
+let myChart3;
 const router = useRouter()
 const handleUser = ()=>{
     router.push('/usersmanage')
@@ -218,23 +226,76 @@ const handleGoods = ()=>{
     router.push('/goodsmanage')
 }
 watchEffect(()=>{
-    if(!myChart){
-     myChart = echarts.init(tabRef.value);   
+    if(!myChart1){
+     myChart1 = echarts.init(tabRef1.value);   
     }
-myChart.setOption({
+myChart1.setOption({
   title: {
     text: '订单数量'
   },
   tooltip: {},
   xAxis: {
-    data:  ['0706', '0707', '0708', '0709', '0710', '0711','0712']
+    data:  ['07-12', '07-11', '07-10', '07-09', '07-08', '07-07','07-06','07-05','07-04','07-03','07-02','07-01','06-30','06-29','06-28','06-27','06-26','06-25','06-24','06-23','06-22','06-21','06-20','06-19','06-18','06-17','06-16','06-15','06-14','06-13']
   },
   yAxis: {},
   series: [
     {
       name: '数量',
       type: 'bar',
-      data: [5, 20, 36, 10, 10, 20,50]
+      data: [50,20,0,0,0,10,0,0,5,0,60,0,5,7,8,0,9,0,0,15,0,25,20,24,0,0,0,60,0,30],
+      showBackground: true,
+      backgroundStyle: {
+        color: 'rgba(180, 180, 180, 0.2)'
+    }
+    }
+  ]
+});
+    if(!myChart2){
+     myChart2 = echarts.init(tabRef2.value);   
+    }
+myChart2.setOption({
+  title: {
+    text: '订单数量'
+  },
+  tooltip: {},
+  xAxis: {
+    data:  ['07-06', '07-07', '07-08', '07-09', '07-10', '07-11','07-12']
+  },
+  yAxis: {},
+  series: [
+    {
+      name: '数量',
+      type: 'bar',
+      data: [5, 20, 36, 10, 10, 20,50],
+      showBackground: true,
+      backgroundStyle: {
+        color: 'rgba(180, 180, 180, 0.2)'
+    }
+    }
+  ]
+});
+
+if(!myChart3){
+     myChart3 = echarts.init(tabRef3.value);   
+    }
+myChart3.setOption({
+  title: {
+    text: '订单数量'
+  },
+  tooltip: {},
+  xAxis: {
+    data:  ['00', '23', '22', '21', '20', '19','18','17','16','15','14','13','12','11','10','9','8','7','6','5','4','3','2','1']
+  },
+  yAxis: {},
+  series: [
+    {
+      name: '数量',
+      type: 'bar',
+      data: [0,0,0, 0, 0, 7, 12, 15,10,8,0,3,0,25,20,10,0,0,0,0,0,0,0,0],
+      showBackground: true,
+      backgroundStyle: {
+        color: 'rgba(180, 180, 180, 0.2)'
+    }
     }
   ]
 });
@@ -246,10 +307,11 @@ myChart.setOption({
 <style scoped>
 .table-box{
     background: #fff;
+    width: 100%;
     height: 420px;
 }
 .table-bar{
-    width: 100%;
+    width: 750px;
     height: 300px;
 }
 .el-card h2{
