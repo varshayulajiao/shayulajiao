@@ -27,7 +27,7 @@
                 <el-table-column prop="id" label="ID"  />
                 <el-table-column label="商品封面"  >
                     <template #default="scope" class="table-foot">
-                        <img :src=scope.rowimgurl  style="width: 80px;height: 80px;">        
+                        <img :src=scope.row.imgurl  style="width: 80px;height: 80px;">        
                     </template>
                 </el-table-column>
                 <el-table-column prop="name" label="商品名称" />
@@ -144,7 +144,7 @@ const foodsData = ref([
     {    
         time:'2023-07-08 10:56:13',
         foodclass:'手机数码',
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明',
         inventory:100,
         price:'￥10.00',
@@ -153,7 +153,7 @@ const foodsData = ref([
     {    
         time:'2023-07-08 10:56:13',
         foodclass:'手机数码',
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明',
         inventory:100,
         price:'￥10.00',
@@ -162,7 +162,7 @@ const foodsData = ref([
     {    
         time:'2023-07-08 10:56:13',
         foodclass:'手机数码',
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明',
         inventory:100,
         price:'￥10.00',
@@ -171,7 +171,7 @@ const foodsData = ref([
     {    
         time:'2023-07-08 10:56:13',
         foodclass:'手机数码',
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明',
         inventory:100,
         price:'￥10.00',
@@ -180,7 +180,7 @@ const foodsData = ref([
     {    
         time:'2023-07-08 10:56:13',
         foodclass:'手机数码',
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明',
         inventory:100,
         price:'￥10.00',
@@ -189,7 +189,7 @@ const foodsData = ref([
     {    
         time:'2023-07-08 10:56:13',
         foodclass:'手机数码',
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明',
         inventory:100,
         price:'￥10.00',
@@ -199,27 +199,27 @@ const foodsData = ref([
 const tableData = ref([
     {    
         id:200,
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明'
     },
     {    
         id:200,
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明'
     },
     {    
         id:200,
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明'
     },
     {    
         id:200,
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明'
     },
     {    
         id:200,
-        imgurl:'',
+        imgurl:'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg',
         name:'小明'
     },
 ])
