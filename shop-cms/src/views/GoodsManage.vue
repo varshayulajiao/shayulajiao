@@ -74,20 +74,19 @@
                             <el-tag class="ml-2" type="danger">仓库</el-tag>
                         </template>
                 </el-table-column>
-                <el-table-column label="审核状态" width="100">
+                <el-table-column label="审核状态" width="100" align="right">
                     <template #default="scope">
                         <el-button type="success" plain class="state-success-button">审核通过</el-button>
                         <el-button type="danger" plain class="state-danger-button">审核拒绝</el-button>
                      </template>
                 </el-table-column>
-                <el-table-column label="库存数量" property="count">
+                <el-table-column label="库存数量" property="count" align="right">
 
                 </el-table-column>
-                <el-table-column label="操作" width="400px"> 
+                <el-table-column label="操作" align="right"> 
                     <template #default="scope">
                         <a class="btn-text" @click="handleModifyDrawer(scope.$index,scope.row)">修改</a>
                         <a class="btn-text" @click="handleCarouselDrawer(scope.$index,scope.row)">设置轮播图</a>
-                        <a class="btn-text">商品详情</a>
                         <a class="btn-text">删除</a>
                     </template>
                 </el-table-column>
