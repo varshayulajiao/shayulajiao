@@ -12,7 +12,7 @@
             <el-row>
                 <el-col :span="8">
                     <el-form  ref="ruleFormRef" :model="ruleForm">
-                        <el-form-item label="商品名称" class="goodsName-el-item">
+                        <el-form-item label="商品名称" class="title-el-item">
                             <el-input v-model="ruleForm.name" placeholder="商品名称" />
                         </el-form-item>
                     </el-form>
@@ -105,7 +105,7 @@
                     status-icon
                 >
                     <el-form-item label="商品名称" >
-                    <el-input type="password" v-model="modifyRuleForm.goodsName" />
+                    <el-input type="password" v-model="modifyRuleForm.title" />
                     </el-form-item>
                     <el-form-item label="封面" >
                         <el-upload
@@ -132,35 +132,35 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="商品描述">
-                    <el-input type="text" v-model="modifyRuleForm.goodsInfo" />
+                    <el-input type="text" v-model="modifyRuleForm.desc" />
                     </el-form-item>
                     <el-form-item label="商品单位" >
-                    <el-input type="text" v-model="modifyRuleForm.goodsUnit" style="width:100px"/>
+                    <el-input type="text" v-model="modifyRuleForm.unit" style="width:100px"/>
                     </el-form-item>
                     <el-form-item label="总库存">
-                    <el-input type="text" v-model="modifyRuleForm.goodsAllCount" style="width:150px"/>
+                    <el-input type="text" v-model="modifyRuleForm.stock" style="width:150px"/>
                     <el-tag class="ml-2" type="info">件</el-tag>
                     </el-form-item>
                     <el-form-item label="库存预警">
-                    <el-input type="text" v-model="modifyRuleForm.countDanger" style="width:150px"/>
+                    <el-input type="text" v-model="modifyRuleForm.minStock" style="width:150px"/>
                     <el-tag class="ml-2" type="info">件</el-tag>
                     </el-form-item>
                     <el-form-item label="最低销售">
-                    <el-input type="text" v-model="modifyRuleForm.price" style="width:150px"/>
+                    <el-input type="text" v-model="modifyRuleForm.minPrice" style="width:150px"/>
                     <el-tag class="ml-2" type="info">元</el-tag>
                     </el-form-item>
                     <el-form-item label="最低原价">
-                    <el-input type="text" v-model="modifyRuleForm.originPrice" style="width:150px"/>
+                    <el-input type="text" v-model="modifyRuleForm.minOprice" style="width:150px"/>
                     <el-tag class="ml-2" type="info">元</el-tag>
                     </el-form-item>
                     <el-form-item label="库存显示">
-                        <el-radio-group v-model="countShow">
+                        <el-radio-group v-model="stockDisplay">
                             <el-radio label="是" border>是</el-radio>
                             <el-radio label="否" border>否</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="是否上架">
-                        <el-radio-group v-model="grounding">
+                        <el-radio-group v-model="status">
                             <el-radio label="是" size="large" border>是</el-radio>
                             <el-radio label="否" size="large" border>否</el-radio>
                         </el-radio-group>
@@ -193,6 +193,7 @@
 </template>
 
 <script setup>
+import { getGoodList }from '../api/goods'
 import {ref,reactive} from 'vue'
 const activeName = ref('all')
 
@@ -228,6 +229,9 @@ const multipleSelection =ref(null)
 const handleSelectionChange = (val) => {
   multipleSelection.value = val
 }
+// getGoodList().then((res)=>{
+//     console.log(res)
+// })
 const tableData = ref([
   {
     xxx:'123',
@@ -252,17 +256,17 @@ const handleCarouselDrawer=(index,row)=>{
 }
 const modifyRuleFormRef=ref(null)
 const modifyRuleForm=reactive({
-    goodsName:'',
-    img:'',
-    goodsClass:'',
-    goodsInfo:'',
-    goodsUnit:'件',
-    goodsAllCount:'',
-    countDanger:'',
-    price:'',
-    originPrice:'',
-    countShow:'',
-    grounding:'',
+    title:'',
+    cover:'',
+    categoryId:'',
+    desc:'',
+    unit:'件',
+    stock:'',
+    minStock:'',
+    minPrice:'',
+    minOprice:'',
+    stockDisplay:'',
+    status:'',
 })
 const imageUrl = ref('')
 
@@ -305,8 +309,8 @@ const options=ref([
   },
 ])
 //库存显示 是否上架
-const countShow=ref('是')
-const grounding=ref('是')
+const stockDisplay=ref('是')
+const status=ref('是')
 </script>
 
 <style scoped>
@@ -314,7 +318,7 @@ const grounding=ref('是')
     height:100%;
     background: #fff;
 }
-.goodsName-el-item{
+.title-el-item{
     width:300px;
     justify-content: center;
 }
@@ -345,7 +349,7 @@ const grounding=ref('是')
 .all .img img{
     width: 100%;
     height: 100%;
-    object-fit: cover
+    object-fit: img
 }
 .text-rose-500{
     --tw-text-opacity: 1;
