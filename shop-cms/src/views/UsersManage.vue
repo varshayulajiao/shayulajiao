@@ -137,6 +137,7 @@ const handlerem = (index) => {
 const tableData = ref([])
 //请求用户列表
 usersList().then((val)=>{
+    console.log(val)
     const data=val.data.data
     data.forEach((item)=>{
         tableData.value.push({

@@ -4,7 +4,7 @@ function login(data){
  return http.post('/sysUser/login',data)
 }
 function usersList(){
-return http.get('/sysUser/list')
+return http.get('/sysUser/list',{})
 }
 export {
     login,
