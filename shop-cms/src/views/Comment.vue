@@ -9,29 +9,45 @@
         <el-table :data="tableData" :border="parentBorder" style="width: 100%">
             <el-table-column type="expand">
                 <template #default="props">
-                    <p m="t-0 b-2"><img style="border-radius: 50%; margin-left: 120px; width: 50px;"
-                            src="https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/Appstatic/qsbk/demo/userpic/6.jpg"
-                            alt="">u********rr 2019-09-01 20:34:27</p>
-                    <p m="t-0 b-2" style="margin-left: 188px;">商品不错哦</p>
-                    <p m="t-0 b-2"><img style="margin-left: 188px;"
-                            src="	https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/Appstatic/qsbk/demo/demo101.jpg"
-                            alt=""></p>
                     <p m="t-0 b-2">
-                        <el-input style="margin-left: 188px;" v-model="textarea" :rows="2" type="textarea"
+                        <img style="border-radius: 50%; margin-left: 120px; width: 50px;"
+                            src="https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/Appstatic/qsbk/demo/userpic/6.jpg"
+                            alt="">
+                        u********rr 2019-09-01 20:34:27
+                    </p>
+                    <p m="t-0 b-2" style="margin-left: 188px;">
+                        商品不错哦
+                    </p>
+                    <p m="t-0 b-2">
+                        <img style="margin-left: 188px;"
+                            src="	https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/Appstatic/qsbk/demo/demo101.jpg"
+                            alt="">
+                    </p>
+                    <p m="t-0 b-2">
+                        <el-input style="margin-left: 188px;"
+                            v-model="textarea" 
+                            :rows="2" type="textarea"
                             placeholder="评论" />
                     </p>
                     <p m="t-0 b-2" style="margin-left: 188px; margin-top: 5px;">
-                        <el-button type="primary">回复</el-button>
-                        <el-button>取消</el-button>
+                        <el-button type="primary">
+                            回复
+                        </el-button>
+                        <el-button>
+                            取消
+                        </el-button>
                     </p>
                 </template>
             </el-table-column>
             <el-table-column prop="name" label="ID" width="80" />
-            <el-table-column prop="name1" label="商品" width="300"><img
-                    src="https://yanxuan-item.nosdn.127.net/4c536c4ea486f8d5c8a172bfaaf5b680.png"
-                    alt="">小米-天鹅绒柔暖四件套</el-table-column>
-            <el-table-column prop="name2" label="评价信息" width="250"> 用户：u********rr <el-rate v-model="value"
-                    disabled show-score text-color="#ff9900" score-template="{value}" />
+            <el-table-column prop="name1" label="商品" width="300">
+                <img src="https://yanxuan-item.nosdn.127.net/4c536c4ea486f8d5c8a172bfaaf5b680.png"
+                     alt=""  >
+                    小米-天鹅绒柔暖四件套
+            </el-table-column>
+            <el-table-column prop="name2" label="评价信息" width="250">
+                用户：u********rr 
+                <el-rate v-model="value" disabled show-score text-color="#ff9900" score-template="{value}" />
             </el-table-column>
             <el-table-column prop="name3" label="评价时间" width="200" />
             <el-table-column prop="name4" label="是否显示" width="180">
