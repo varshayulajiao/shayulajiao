@@ -17,7 +17,7 @@
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit(searchRuleForm)">搜索</el-button>
-                            <el-button>重置</el-button>
+                            <el-button @click="resetForm(searchRuleForm)">重置</el-button>
                             <el-button @click="isShow=true" v-if="!isShow">展开<el-icon><ArrowDown /></el-icon></el-button>
                             <el-button @click="isShow=false" v-else>收起<el-icon><ArrowUp /></el-icon></el-button>
                         </el-form-item>
@@ -74,9 +74,12 @@
                     </el-form-item>
                     <!-- 修改抽屉的下拉选择框 -->
                     <el-form-item label="会员等级">
-                        <el-select v-model="userLevel" class="m-2" placeholder="请选择会员等级" size="large">
-                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-                        </el-select>
+                            <el-select v-model="searchRuleForm.userLevel" placeholder="请选择会员等级">
+                                <el-option label="钻石会员" value="钻石会员" />
+                                <el-option label="黄金会员" value="黄金会员" />
+                                <el-option label="白银会员" value="白银会员" />
+                                <el-option label="普通会员" value="普通会员" />
+                            </el-select>
                     </el-form-item>
                     <el-form-item label="手机">
                         <el-input type="text" v-model="tableData[formIndex].telephone" />
@@ -96,7 +99,7 @@
                     </div>
                 </template>
             </el-drawer>
-            <el-pagination background layout="prev, pager, next" :total="tableDataRef.length" :page-size="pageSize" @current-change="handleClick"/>
+            <el-pagination background layout="prev, pager, next" :total="tableDataRef?.length" :page-size="pageSize" @current-change="handleClick"/>
         </el-card>
     </div>
 </template>
@@ -104,8 +107,8 @@
 <script setup>
 import ListHeader from '../components/ListHeader.vue'
 import {usersList} from '../api/users'
-import { ref,computed } from 'vue';
-const searchRuleForm=ref({
+import { ref,computed,reactive} from 'vue';
+const searchRuleForm=reactive({
     keyWords:'',
     userLevel:''
 })
@@ -117,6 +120,11 @@ const switchValue = ref(false)
 const imageUrl = ref('')
 
 const onSubmit = (formEl) => {
+    tableDataRef.value= tableData.value.filter((item)=>item.username.includes(formEl.keyWords))
+    console.log(tableDataRef.value)
+}
+const resetForm=(formEl)=>{
+    
 }
 const handleDrawer = (index) => {
     tableData.value[index].drawer = true    
@@ -147,11 +155,18 @@ usersList().then((val)=>{
 //分页功能
 const pageSize=ref(10)
 const startPage=ref(0)
-const tableDataRef=computed(()=>{
-        return tableData.value.filter((item)=>item.username.includes(searchRuleForm.value.keyWords))
-    })
+/* const tableDataRef=computed(()=>{
+        return tableData.value.filter((item)=>item.username.includes(searchRuleForm.keyWords))
+    }) */
+const tableDataRef=ref(null)
 const pageDataRef=computed(()=>{//slice包前不包后 起始索引0 截止索引2 得到的是0,1
-    return tableDataRef.value.slice(startPage.value*pageSize.value,(startPage.value+1)*pageSize.value)
+    if(tableDataRef.value!=null){
+        console.log(123)
+      return  tableDataRef.value.slice(startPage.value*pageSize.value,(startPage.value+1)*pageSize.value)
+    }else{
+        return tableData.value
+    }
+    
 })
 const handleClick=((index)=>{
     console.log(index)

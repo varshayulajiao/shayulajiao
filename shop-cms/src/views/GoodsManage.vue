@@ -37,11 +37,92 @@
                 </el-col>
             </el-row>
             <div class="btn-bottom">
-                <el-button type="primary">新增</el-button>
+                <el-button type="primary" @click="newDrawer=!newDrawer">新增</el-button>
                 <el-button type="danger">批量删除</el-button>
                 <el-button>上架</el-button>
                 <el-button>下架</el-button>
             </div>
+            <!-- 新增抽屉 -->
+            <el-drawer
+                    v-model="newDrawer"
+                    title="新增"
+                >
+                <el-form
+                    ref="newRuleFormRef"
+                    :model="newRuleForm"
+                    label-width="120px"
+                    class="demo-ruleForm"
+                    status-icon
+                >
+                    <el-form-item label="商品名称" >
+                    <el-input type="password" v-model="newRuleForm.goodsName" />
+                    </el-form-item>
+                    <el-form-item label="封面" >
+                        <el-upload
+                            class="avatar-uploader"
+                            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload"
+                        >
+                            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                        </el-upload>
+                    </el-form-item>
+                    <!-- 新增抽屉的下拉选择框 -->
+                    <el-form-item label="商品分类">
+                        <el-select v-model="select_value">
+                            <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                            :disabled="item.disabled"
+                            />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="商品描述">
+                    <el-input type="text" v-model="newRuleForm.goodsInfo" />
+                    </el-form-item>
+                    <el-form-item label="商品单位" >
+                    <el-input type="text" v-model="newRuleForm.goodsUnit" style="width:100px"/>
+                    </el-form-item>
+                    <el-form-item label="总库存">
+                    <el-input type="text" v-model="newRuleForm.goodsAllCount" style="width:150px"/>
+                    <el-tag class="ml-2" type="info">件</el-tag>
+                    </el-form-item>
+                    <el-form-item label="库存预警">
+                    <el-input type="text" v-model="newRuleForm.countDanger" style="width:150px"/>
+                    <el-tag class="ml-2" type="info">件</el-tag>
+                    </el-form-item>
+                    <el-form-item label="最低销售">
+                    <el-input type="text" v-model="newRuleForm.price" style="width:150px"/>
+                    <el-tag class="ml-2" type="info">元</el-tag>
+                    </el-form-item>
+                    <el-form-item label="最低原价">
+                    <el-input type="text" v-model="newRuleForm.originPrice" style="width:150px"/>
+                    <el-tag class="ml-2" type="info">元</el-tag>
+                    </el-form-item>
+                    <el-form-item label="库存显示">
+                        <el-radio-group v-model="countShow">
+                            <el-radio label="是" border>是</el-radio>
+                            <el-radio label="否" border>否</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="是否上架">
+                        <el-radio-group v-model="grounding">
+                            <el-radio label="是" size="large" border>是</el-radio>
+                            <el-radio label="否" size="large" border>否</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div style="flex: auto">
+                        <el-button type="primary">提交</el-button>
+                        <el-button >取消</el-button>
+                    </div>
+                    </template>
+                </el-drawer>
             <!-- 下面那块表格 -->
             <el-table
                 ref="multipleTableRef"
@@ -87,7 +168,11 @@
                     <template #default="scope">
                         <a class="btn-text" @click="handleModifyDrawer(scope.$index,scope.row)">修改</a>
                         <a class="btn-text" @click="handleCarouselDrawer(scope.$index,scope.row)">设置轮播图</a>
-                        <a class="btn-text">删除</a>
+                        <el-popconfirm title="是否要删除该记录?" @confirm="handleRemove(scope.$index)">
+                            <template #reference>
+                                <a class="btn-text">删除</a>
+                            </template>
+                        </el-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>
@@ -242,8 +327,24 @@ const tableData = ref([
     carouselDrawer:false
   }
 ])
+//新增抽屉功能部分
+const newRuleFormRef=ref(null)
+const newDrawer=ref(false)
+const newRuleForm=reactive({
+    goodsName:'',
+    img:'',
+    goodsClass:'',
+    goodsInfo:'',
+    goodsUnit:'件',
+    goodsAllCount:'',
+    countDanger:'',
+    price:'',
+    originPrice:'',
+    countShow:'',
+    grounding:'',
+})
+
 //表格操作部分抽屉功能--修改
-const drawer=ref(false)
 const handleModifyDrawer=(index,row)=>{
     tableData.value[index].modifyDrawer=!tableData.value[index].modifyDrawer
 }
@@ -307,6 +408,10 @@ const options=ref([
 //库存显示 是否上架
 const countShow=ref('是')
 const grounding=ref('是')
+//删除单独行的内容
+const handleRemove=(index)=>{
+    tableData.value.splice(index,1)
+}
 </script>
 
 <style scoped>
