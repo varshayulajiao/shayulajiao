@@ -314,9 +314,9 @@ const multipleSelection =ref(null)
 const handleSelectionChange = (val) => {
   multipleSelection.value = val
 }
-// getGoodList().then((res)=>{
-//     console.log(res)
-// })
+getGoodList({}).then((res)=>{
+    console.log(res)
+})
 const tableData = ref([
   {
     xxx:'123',
