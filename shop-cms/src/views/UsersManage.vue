@@ -3,28 +3,29 @@
         <el-card >
             <template #header>
                 <div class="card-header">
-                    <el-form label-width="120px" class="form-box">
+                    <el-form label-width="120px" class="form-box" ref="searchFormRef" >
                         <el-form-item label="关键词">
-                            <div class="form-left">
-                                <el-input v-model="keyWords" placeholder="手机号/邮箱/会员昵称" />
-                                <div class="form-left-item">
-                                    <div style="width: 200px;text-align: right;">会员等级</div>
-                                    <el-select v-model="userLevel" class="m-2" placeholder="请选择会员等级" size="large">
-                                        <el-option v-for="item in options" :key="item.value" :label="item.label"
-                                            :value="item.value" />
-                                    </el-select>
-                                </div>
-                            </div>
+                                <el-input v-model="searchRuleForm.keyWords" placeholder="手机号/邮箱/会员昵称" />
+                        </el-form-item>
+                        <el-form-item label="会员等级" v-if="isShow">
+                            <el-select v-model="searchRuleForm.userLevel" placeholder="请选择会员等级">
+                                <el-option label="钻石会员" value="钻石会员" />
+                                <el-option label="黄金会员" value="黄金会员" />
+                                <el-option label="白银会员" value="白银会员" />
+                                <el-option label="普通会员" value="普通会员" />
+                            </el-select>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit">搜索</el-button>
+                            <el-button type="primary" @click="onSubmit(searchRuleForm)">搜索</el-button>
                             <el-button>重置</el-button>
+                            <el-button @click="isShow=true" v-if="!isShow">展开<el-icon><ArrowDown /></el-icon></el-button>
+                            <el-button @click="isShow=false" v-else>收起<el-icon><ArrowUp /></el-icon></el-button>
                         </el-form-item>
                     </el-form>
                     <ListHeader />
                 </div>
             </template>
-            <el-table :data="tableData" stripe table-layout="auto">
+            <el-table :data="pageDataRef" stripe table-layout="auto">
                 <el-table-column label="会员"  >
                     <template #default="scope">
                        <div>{{ scope.row.username }}</div>
@@ -50,7 +51,7 @@
                 </el-table-column>
 
             </el-table>
-            <el-drawer v-for="item in tableData" v-model="item.drawer" title="修改">
+            <el-drawer v-for="item in pageDataRef" v-model="item.drawer" title="修改">
                 <el-form label-width="120px" class="demo-ruleForm" status-icon>
                     <el-form-item label="用户名">
                         <el-input type="text" v-model="tableData[formIndex].username" />
@@ -95,150 +96,67 @@
                     </div>
                 </template>
             </el-drawer>
-            <el-pagination background layout="prev, pager, next" :total="1000" />
-
+            <el-pagination background layout="prev, pager, next" :total="tableDataRef.length" :page-size="pageSize" @current-change="handleClick"/>
         </el-card>
-
-
-
     </div>
 </template>
 
 <script setup>
 import ListHeader from '../components/ListHeader.vue'
-import { ref } from 'vue';
-const keyWords = ref('')
-const userLevel = ref('')
+import {usersList} from '../api/users'
+import { ref,computed } from 'vue';
+const searchRuleForm=ref({
+    keyWords:'',
+    userLevel:''
+})
+const searchFormRef=ref(null)
+const isShow=ref(false)
+
 const formIndex = ref('')
 const switchValue = ref(false)
 const imageUrl = ref('')
-const onSubmit = () => {
 
+const onSubmit = (formEl) => {
 }
 const handleDrawer = (index) => {
-    tableData.value[index].drawer = true
+    tableData.value[index].drawer = true    
     formIndex.value = index
 
 }
 const handlerem = (index) => {
     tableData.value.splice(index, 1)
 }
-const tableData = ref([
-    {
-        username: 'xiaoming',
-        userlevel: '黄金会员',
+const tableData = ref([])
+//请求用户列表
+usersList().then((val)=>{
+    const data=val.data.data
+    data.forEach((item)=>{
+        tableData.value.push({
+        username: item.username,
+        userlevel: item.userLevelId,
         time: '注册时间:2023-07-06 10:28:26',
         onoff: false,
         drawer: false,
-        password: '',
-        telephone: '13112341234',
-        email: '',
-        id:200
-    },
-    {
-        username: 'xiaoming',
-        userlevel: '黄金会员',
-        time: '注册时间:2023-07-06 10:28:26',
-        onoff: false,
-        drawer: false,
-        password: '',
-        telephone: '13112341234',
-        email: '',
-        id:200
-    },
-    {
-        username: 'xiaoming',
-        userlevel: '黄金会员',
-        time: '注册时间:2023-07-06 10:28:26',
-        onoff: false,
-        drawer: false,
-        password: '',
-        telephone: '13112341234',
-        email: '',
-        id:200
-    },
-    {
-        username: 'xiaoming',
-        userlevel: '黄金会员',
-        time: '注册时间:2023-07-06 10:28:26',
-        onoff: false,
-        drawer: false,
-        password: '',
-        telephone: '13112341234',
-        email: '',
-        id:200
-    },
-    {
-        username: 'xiaoming',
-        userlevel: '黄金会员',
-        time: '注册时间:2023-07-06 10:28:26',
-        onoff: false,
-        drawer: false,
-        password: '',
-        telephone: '13112341234',
-        email: '',
-        id:200
-    },
-    {
-        username: 'xiaoming',
-        userlevel: '黄金会员',
-        time: '注册时间:2023-07-06 10:28:26',
-        onoff: false,
-        drawer: false,
-        password: '',
-        telephone: '13112341234',
-        email: '',
-        id:200
-    },
-    {
-        username: 'xiaoming',
-        userlevel: '黄金会员',
-        time: '注册时间:2023-07-06 10:28:26',
-        onoff: false,
-        drawer: false,
-        password: '',
-        telephone: '13112341234',
-        email: '',
-        id:200
-    },
-    {
-        username: 'xiaoming',
-        userlevel: '黄金会员',
-        time: '注册时间:2023-07-06 10:28:26',
-        onoff: false,
-        drawer: false,
-        password: '',
-        telephone: '13112341234',
-        email: '',
-        id:200
-    },
-])
-const options = ref([
-    {
-        value: '王者会员',
-        label: '王者会员',
-    },
-    {
-        value: '钻石会员',
-        label: '钻石会员',
-    },
-    {
-        value: '黄金会员',
-        label: '黄金会员',
-    },
-    {
-        value: '白银会员',
-        label: '白银会员',
-    },
-    {
-        value: '青铜会员',
-        label: '青铜会员',
-    },
-    {
-        value: '普通会员',
-        label: '普通会员',
-    },
-])
+        password: item.password,
+        telephone: item.phone,
+        email: item.email,
+        id:item.id
+        })
+    })
+})
+//分页功能
+const pageSize=ref(10)
+const startPage=ref(0)
+const tableDataRef=computed(()=>{
+        return tableData.value.filter((item)=>item.username.includes(searchRuleForm.value.keyWords))
+    })
+const pageDataRef=computed(()=>{//slice包前不包后 起始索引0 截止索引2 得到的是0,1
+    return tableDataRef.value.slice(startPage.value*pageSize.value,(startPage.value+1)*pageSize.value)
+})
+const handleClick=((index)=>{
+    console.log(index)
+    startPage.value=index-1
+})
 </script>
 
 <style scoped>

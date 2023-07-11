@@ -213,7 +213,7 @@ import useLogin from '../stores/user.js'
 const Login=useLogin()
 const handleRemoveLogin=()=>{
     ElMessage.success('退出登录成功')
-    Login.NowToken('')
+    Login.NowPassword('')
     Login.NowUsername('')
     router.push('/login')
     routePath.NowPath('')
