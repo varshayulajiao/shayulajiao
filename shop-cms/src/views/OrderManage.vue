@@ -107,7 +107,7 @@
                 <el-table-column label="操作" >     
                     <template #default="scope" >
                         <a class="btn-text" @click="handleOrderDetails(scope.$index,scope.row)">订单详情</a>
-                        <a class="btn-text" @click="handleCarouselDrawer(scope.$index,scope.row)">订单发货</a>
+                        <a class="btn-text" @click="handleOrderSendGoods(scope.$index,scope.row)">订单发货</a>
                     </template>
                 </el-table-column>
             </el-table>
@@ -117,7 +117,8 @@
                     v-model="item.OrderDetailsDrawer"
                     title="订单详情"
                 >
-                <el-card class="box-card">
+                <!-- 订单详情 -->
+                <el-card class="order-details-card drawer-card">
                     <template #header>
                     <div class="card-header">
                         <span>订单详情</span>
@@ -129,25 +130,76 @@
                         <p>下单时间:{{item.time}}</p>
                     </div>
                 </el-card>
-                <el-card class="box-card">
+                <!-- 商品信息 -->
+                <el-card class="goods-details-card drawer-card">
                     <template #header>
                     <div class="card-center">
                         <span>商品信息</span>
                     </div>
                     </template>
-                    <div>
-                        <p>订单号:{{item.orderNumber}}</p>
-                        <p>付款方式:{{item.payState}}</p>
-                        <p>下单时间:{{item.time}}</p>
+                    <div class="card-center-top">
+                        <div class="top-left">
+                            <img :src="item.goodsUrl" alt="" width="60">
+                        </div>
+                        <div class="top-right">
+                            <p>{{ item.goodsname }}</p>
+                            <p style="color:red;font-weight:bold">￥{{ item.price }}×{{ item.count }}</p>
+                        </div>
+                    </div>
+                    <div class="card-center-bottom">
+                        <p>成交价</p>
+                        <p style="color:red;font-weight:bold">{{ item.price*item.count }}</p>
                     </div>
                 </el-card>
+                <!-- 收货信息 -->
+                <el-card class="addr-details-card drawer-card">
+                    <template #header>
+                    <div class="card-center">
+                        <span>收货信息</span>
+                    </div>
+                    </template>
+                    
+                    <div>
+                        <p>收货人:{{item.users}}</p>
+                        <p>联系方式:{{item.phone}}</p>
+                        <p>收货地址:{{item.userAddr}}</p>
+                    </div>
+                </el-card>
+            </el-drawer>
+            <!-- 订单发货抽屉 -->
+            <el-drawer
+                    v-for="item in tableData"
+                    v-model="item.OrderSendGoodsDrawer"
+                    title="发货"
+                >
+                <el-form
+                    :ref="orderSendGoodsFormRef"
+                    :model="orderSendGoodsRuleForm"
+                >
+                <el-form-item label="快递公司">
+                    <el-select v-model="orderSendGoodsRuleForm.expressCompany" placeholder="请选择快递公司">
+                        <el-option label="宅急送" value="宅急送" />
+                        <el-option label="天天快递" value="天天快递" />
+                        <el-option label="申通快递" value="申通快递" />
+                        <el-option label="顺丰速运" value="顺丰速运" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="快递单号">
+                    <el-input v-model="orderSendGoodsRuleForm.expressNumber" />
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitSendGoods">
+                        提交
+                    </el-button>
+                </el-form-item>
+            </el-form>
             </el-drawer>
         </el-card>
 </template>
 
 <script setup>
 //导航分类
-import {ref,reactive} from 'vue'
+import {ref,reactive,nextTick} from 'vue'
 const activeName=ref('all')
 const ruleFormRef=ref(null)
 const ruleForm=reactive({
@@ -164,6 +216,7 @@ const handleClick=()=>{
 const isShow=ref(false)
 const submitForm =  (formEl) => {
   if (!formEl) return
+  console.log(formEl)
    formEl.validate((valid, fields) => {
     if (valid) {
       console.log('submit!',ruleForm)
@@ -199,8 +252,11 @@ const tableData = ref([
     takeGoodsState:'未收货',
     sendGoodsState:'未发货',
     OrderDetailsDrawer:false,
+    OrderSendGoodsDrawer:false,
     userAddr:'大连设计城',
-    phone:'15012341234'
+    phone:'15012341234',
+    count:1,
+    orderSendGoodsFormRef:ref(null)
   },
   {
    price:'0.10',
@@ -214,8 +270,11 @@ const tableData = ref([
    takeGoodsState:'未收货',
    sendGoodsState:'未发货',
    OrderDetailsDrawer:false,
+   OrderSendGoodsDrawer:false,
    userAddr:'大连设计城',
-   phone:'15012341234'
+   phone:'15012341234',
+   count:1,
+   orderSendGoodsFormRef:ref(null)
   },
   {
     price:'0.10',
@@ -229,8 +288,11 @@ const tableData = ref([
     takeGoodsState:'未收货',
     sendGoodsState:'未发货',
     OrderDetailsDrawer:false,
+    OrderSendGoodsDrawer:false,
     userAddr:'大连设计城',
-    phone:'15012341234'
+    phone:'15012341234',
+    count:1,
+    orderSendGoodsFormRef:ref(null)
   },
   {
     price:'0.10',
@@ -244,8 +306,11 @@ const tableData = ref([
     takeGoodsState:'未收货',
     sendGoodsState:'未发货',
     OrderDetailsDrawer:false,
+    OrderSendGoodsDrawer:false,
     userAddr:'大连设计城',
-    phone:'15012341234'
+    phone:'15012341234',
+    count:1,
+    orderSendGoodsFormRef:ref(null)
   },
   {
     price:'0.10',
@@ -259,8 +324,11 @@ const tableData = ref([
     takeGoodsState:'未收货',
     sendGoodsState:'未发货',
     OrderDetailsDrawer:false,
+    OrderSendGoodsDrawer:false,
     userAddr:'大连设计城',
-    phone:'15012341234'
+    phone:'15012341234',
+    count:1,
+    orderSendGoodsFormRef:ref(null)
   },
   {
     price:'0.10',
@@ -274,8 +342,11 @@ const tableData = ref([
     takeGoodsState:'未收货',
     sendGoodsState:'未发货',    
     OrderDetailsDrawer:false,
+    OrderSendGoodsDrawer:false,
     userAddr:'大连设计城',
-    phone:'15012341234'
+    phone:'15012341234',
+    count:1,
+    orderSendGoodsFormRef:ref(null)
   },
   {
     price:'0.10',
@@ -289,19 +360,33 @@ const tableData = ref([
     takeGoodsState:'未收货',
     sendGoodsState:'未发货',
     OrderDetailsDrawer:false,
+    OrderSendGoodsDrawer:false,
     userAddr:'大连设计城',
-    phone:'15012341234'
+    phone:'15012341234',
+    count:1,
+    orderSendGoodsFormRef:ref(null)
   },
 ])
-//订单详情抽屉
+//订单详情抽屉点开事件
 const handleOrderDetails=(index,row)=>{
     tableData.value[index].OrderDetailsDrawer=!tableData.value[index].OrderDetailsDrawer
 }
+//订单发货部分
+//订单发货抽屉点开事件
+const handleOrderSendGoods=(index,row)=>{
+    tableData.value[index].OrderSendGoodsDrawer=!tableData.value[index].OrderSendGoodsDrawer
+}
+const orderSendGoodsFormRef =ref(null)
+const orderSendGoodsRuleForm=reactive({
+    expressCompany:'',
+    expressNumber:''
+})
+
 </script>
 
 <style scoped>
 .el-col-offset{
-    margin-left:33%
+    margin-left:33% 
 }
 .btn-right :deep(.el-form-item__content){
     justify-content:flex-end;
@@ -361,5 +446,20 @@ const handleOrderDetails=(index,row)=>{
 .text-blue-500{
     --tw-text-opacity: 1;
     color: rgba(59,130,246,var(--tw-text-opacity));
+}
+.card-center-top{
+    display: flex;
+}
+.card-center-top .top-left{
+    margin-right: 5px;
+}
+.card-center-bottom {
+    display: flex;
+}
+.card-center-bottom p:nth-child(1){
+    margin-right:30px
+}
+.drawer-card{
+    margin-bottom: 20px;
 }
 </style>
