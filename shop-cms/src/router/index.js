@@ -102,7 +102,7 @@ const router = createRouter({
 router.beforeEach((to,from,next)=>{
       if(to.meta.auth){
         const Login=useLogin()
-          if(Login.token){
+          if(Login.username){
             next()
           }else{
             next('/login')
