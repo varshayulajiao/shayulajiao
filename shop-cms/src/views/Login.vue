@@ -71,10 +71,11 @@ const submitForm = (formEl) => {
     formEl.validate((valid, fields) => {
         if (valid) {
             login(ruleForm).then((val)=>{
-               if(val.data.errcode==0){
+                console.log(val.data)
+               if(val.data.message=="成功"){
                     ElMessage.success('登录成功')
-                    Login.NowUsername(val.data.username)
-                    Login.NowToken(val.data.token)
+                    Login.NowUsername(val.data.data.username)
+                    Login.NowPassword(val.data.data.password)
                     router.push('/')
                }
             })

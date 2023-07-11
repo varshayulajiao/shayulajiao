@@ -64,7 +64,7 @@
             <el-container>
                 
                 <el-aside width="auto">
-                    <el-menu default-active="/home" class="el-menu-vertical-demo" :collapse="isCollapse"  router >
+                    <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" :collapse="isCollapse"  router >
                         <!-- 主控台 home -->
                         <el-sub-menu index="/index">
                             <template #title>
@@ -197,7 +197,7 @@
 </template>
 
 <script setup>
-import {ref,reactive,watch} from 'vue'
+import {ref,reactive,watch,computed} from 'vue'
 import {useRouter} from 'vue-router'
 import { ElMessage } from 'element-plus'
 const router=useRouter()
@@ -213,7 +213,7 @@ import useLogin from '../stores/user.js'
 const Login=useLogin()
 const handleRemoveLogin=()=>{
     ElMessage.success('退出登录成功')
-    Login.NowToken('')
+    Login.NowPassword('')
     Login.NowUsername('')
     router.push('/login')
     routePath.NowPath('')
@@ -326,6 +326,11 @@ import screenfull from 'screenfull'
 const screen=()=>{
   screenfull.toggle()
 }
+
+const defaultActive=computed(()=>{
+    return route.path
+})
+
 </script>
 
 <style scoped>
