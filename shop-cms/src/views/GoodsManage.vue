@@ -55,7 +55,7 @@
                     status-icon
                 >
                     <el-form-item label="商品名称" >
-                    <el-input type="password" v-model="newRuleForm.title" />
+                    <el-input type="text" v-model="newRuleForm.title" />
                     </el-form-item>
                     <el-form-item label="封面" >
                         <el-upload
@@ -118,7 +118,7 @@
                 </el-form>
                 <template #footer>
                     <div style="flex: auto">
-                        <el-button type="primary">提交</el-button>
+                        <el-button type="primary" @click="handleNewAdd">提交</el-button>
                         <el-button >取消</el-button>
                     </div>
                     </template>
@@ -136,20 +136,19 @@
                 <template #default="scope">
                     <div class="all">
                         <div class="img">
-                            <img src="http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg">
+                            <img :src=scope.row.cover>
                         </div>
                         <div class="text">
                             <p>{{scope.row.title}}</p>
-                            <span class="text-rose-500">￥10</span>
+                            <span class="text-rose-500">￥{{scope.row.minPrice}}</span>
                             <el-divider direction="vertical" />
-                            <span class="text-rose-500 text-xs">￥100</span>
-                            <p class="text-xs text-gray-400">分类：运动旅行</p>
+                            <span class="text-rose-500 text-xs">￥{{scope.row.minOprice}}</span>
                             <p class="text-xs text-gray-400">创建时间：1970-01-01 08:33:41</p>
                         </div>
                     </div>
                 </template>
                 </el-table-column>
-                <el-table-column label="实际销量" property="tit" width="60"></el-table-column>
+                <el-table-column label="实际销量" property="minStock" width="60"></el-table-column>
                 <el-table-column label="商品状态" width="75" >
                         <template #default="scope">
                             <el-tag class="ml-2" type="danger">仓库</el-tag>
@@ -161,13 +160,13 @@
                         <el-button type="danger" plain class="state-danger-button">审核拒绝</el-button>
                      </template>
                 </el-table-column>
-                <el-table-column label="库存数量" property="count" align="right">
+                <el-table-column label="库存数量" property="stock" align="right">
 
                 </el-table-column>
                 <el-table-column label="操作" align="right"> 
                     <template #default="scope">
                         <a class="btn-text" @click="handleModifyDrawer(scope.$index,scope.row)">修改</a>
-                        <a class="btn-text" @click="handleCarouselDrawer(scope.$index,scope.row)">设置轮播图</a>
+                  
                         <el-popconfirm title="是否要删除该记录?" @confirm="handleRemove(scope.$index)">
                             <template #reference>
                                 <a class="btn-text">删除</a>
@@ -208,7 +207,7 @@
                     <el-form-item label="商品分类">
                         <el-select v-model="select_value">
                             <el-option
-                            v-for="item in options"
+                            v-for="item in  options"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value"
@@ -258,30 +257,16 @@
                     </div>
                     </template>
                 </el-drawer>
-                <!-- 设置轮播图抽屉 -->
-                <el-drawer
-                    v-for="item in tableData"
-                    v-model="item.carouselDrawer"
-                    title="设置轮播图"
-                >
-                
-                <template #footer>
-                    <div style="flex: auto">
-                        <el-button type="primary" >提交</el-button>
-                        <el-button  >取消</el-button>
-                    </div>
-                    </template>
-                </el-drawer>
+              
 
         </el-card>
     </div>
 </template>
 
 <script setup>
-
+import {getGoodList,getGoodCategory,delGood,AddGood} from '../api/goods'
 import {ref,reactive} from 'vue'
 const activeName = ref('all')
-
 const handleClick=()=>{
 
 }
@@ -319,7 +304,7 @@ const tableData = ref([])
 //新增按钮抽屉功能
 const newRuleFormRef=ref(null)
 const newDrawer=ref(false)
-const newRuleForm=reactive({
+const newRuleForm=ref({
     title:'',
     cover:'',
     categoryId:'',
@@ -332,29 +317,21 @@ const newRuleForm=reactive({
     stockDisplay:'',
     status:'',
 })
-//表格操作部分抽屉功能--修改
-const handleModifyDrawer=(index,row)=>{
-    tableData.value[index].modifyDrawer=!tableData.value[index].modifyDrawer
-}
-const handleCarouselDrawer=(index,row)=>{
-    tableData.value[index].carouselDrawer=!tableData.value[index].carouselDrawer
-}
+
+
 const modifyRuleFormRef=ref(null)
-const modifyRuleForm=reactive({
-    title:'',
-    cover:'',
-    categoryId:'',
-    desc:'',
-    unit:'件',
-    stock:'',
-    minStock:'',
-    minPrice:'',
-    minOprice:'',
-    stockDisplay:'',
-    status:'',
-})
+const modifyRuleForm = ref({})
+
 const imageUrl = ref('')
 
+//表格操作部分抽屉功能--修改
+const handleModifyDrawer=(index,row)=>{
+    console.log(tableData.value[index].modifyDrawer)
+    tableData.value[index].modifyDrawer = true 
+    modifyRuleForm.value = tableData.value[index]
+    
+
+}
 const handleAvatarSuccess = (data) => {
     console.log(data)
 }
@@ -372,7 +349,7 @@ const beforeAvatarUpload = (rawFile) => {
 //下拉框
 const select_value=ref('手机数码')
 const options=ref([
-{
+  {
     value: '手机数码',
     label: '手机数码',
   },
@@ -393,14 +370,32 @@ const options=ref([
     label: '电器家务',
   },
 ])
+
 //库存显示 是否上架
 const stockDisplay=ref('是')
 const status=ref('是')
 //删除单独行的内容
 const handleRemove=(index)=>{
-    tableData.value.splice(index,1)
+    let url = '/product?id='
+    url += tableData.value[index].id
+    console.log(url)
+    delGood(url).then(res =>{
+        tableData.value.splice(index,1)
+    })
 }
+getGoodList().then(res =>{
+    tableData.value=res.data.data
+    tableData.value.forEach(item => item.modifyDrawer = false)
+    // console.log(res.data.data)
+})
 
+
+const handleNewAdd =() =>{
+    AddGood(newRuleForm.value).then(res =>{
+        newDrawer.value = false
+        tableData.value.push(newRuleForm.value)
+    })
+}
 </script>
 
 <style scoped>
