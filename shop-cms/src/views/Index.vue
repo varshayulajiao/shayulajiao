@@ -90,7 +90,7 @@
                                 <el-icon><ShoppingTrolley /></el-icon>
                                 <span>商品管理</span>
                             </el-menu-item>
-                            <el-menu-item index="classmanage">
+                            <el-menu-item index="/classmanage">
                                 <el-icon><Files /></el-icon>
                                 <span>商品分类</span>
                             </el-menu-item>
