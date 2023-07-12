@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="b1">
         <!-- 搜索框 -->
         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp关键词<el-input v-model="input" placeholder="要搜索的商品" class="a1" />
         <!-- 重置搜索按钮 -->
@@ -130,11 +130,17 @@ const tableData = [
 .a1 {
     width: 400px;
     margin-left: 10px;
+    /* margin-top: 20px; */
 }
 
 .a2 {
     float: right;
     margin-left: 10px;
+}
+
+.b1{
+    background: white;
+    padding-top: 30px;
 }
 
 img {
