@@ -139,7 +139,7 @@
                             <img src="http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/62af04afe39fa.jpg">
                         </div>
                         <div class="text">
-                            <p>商品名称</p>
+                            <p>{{scope.row.title}}</p>
                             <span class="text-rose-500">￥10</span>
                             <el-divider direction="vertical" />
                             <span class="text-rose-500 text-xs">￥100</span>
@@ -149,7 +149,7 @@
                     </div>
                 </template>
                 </el-table-column>
-                <el-table-column label="实际销量" property="xxx" width="60"></el-table-column>
+                <el-table-column label="实际销量" property="tit" width="60"></el-table-column>
                 <el-table-column label="商品状态" width="75" >
                         <template #default="scope">
                             <el-tag class="ml-2" type="danger">仓库</el-tag>
@@ -315,20 +315,7 @@ const handleSelectionChange = (val) => {
   multipleSelection.value = val
 }
 
-const tableData = ref([
-  {
-    xxx:'123',
-    count:1000,
-    modifyDrawer:false,
-    carouselDrawer:false
-  },
-  {
-    xxx:'456',
-    count:200,
-    modifyDrawer:false,
-    carouselDrawer:false
-  }
-])
+const tableData = ref([])
 //新增按钮抽屉功能
 const newRuleFormRef=ref(null)
 const newDrawer=ref(false)
@@ -413,6 +400,7 @@ const status=ref('是')
 const handleRemove=(index)=>{
     tableData.value.splice(index,1)
 }
+
 </script>
 
 <style scoped>

@@ -6,15 +6,7 @@ const instance = axios.create({
   baseURL: '/api',
   //请求超时
   timeout: 5000,
-<<<<<<< HEAD
-  headers:{'Content-Type':'application/json'},
-  params:{
-
-  }
-  
-=======
-  headers:{'Content-Type':'application/x-www-form-urlencoded'}
->>>>>>> 6a57aa9cb57144b90ab2e69e9c72967b47b89af6
+  // headers:{'Content-Type':'application/x-www-form-urlencoded'}
 });
 
 // 添加请求拦截器 
