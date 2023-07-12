@@ -90,7 +90,7 @@ const submitForm = (formEl) => {
 
 <style scoped>
 .el-row {
-    height: 970px;
+    height: 100vh;
 }
 
 .left-bg {
@@ -152,7 +152,7 @@ const submitForm = (formEl) => {
 }
 
 .right-bg .right-title .right-footer .el-button {
-   margin-left: 90px;
+   margin-left: 40px;
     margin-top: 20px;
     width: 200px;
     height: 40px;
@@ -164,5 +164,5 @@ const submitForm = (formEl) => {
     color: white;
     font-weight: bold;
     text-align: center;
-}
+}   
 </style>

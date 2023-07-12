@@ -2,7 +2,7 @@
     <div>
         <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
             <el-tab-pane label="全部" name="all"></el-tab-pane>
-            <el-tab-pane label="代付款" name="PaymentOnBehalf"></el-tab-pane>
+            <el-tab-pane label="待付款" name="PaymentOnBehalf"></el-tab-pane>
             <el-tab-pane label="待发货" name="ToBeShipped"></el-tab-pane>
             <el-tab-pane label="已发货" name="Shipped"></el-tab-pane>
             <el-tab-pane label="已完成" name="Completed"></el-tab-pane>
