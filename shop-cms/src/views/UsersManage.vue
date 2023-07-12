@@ -124,12 +124,26 @@ const onSubmit = (formEl) => {
     console.log(tableDataRef.value)
 }
 const resetForm=(formEl)=>{
-    
+    formEl.keyWords=''
+    formEl.userLevel=''
 }
 const handleDrawer = (index) => {
     tableData.value[index].drawer = true    
     formIndex.value = index
 
+}
+const handleAvatarSuccess = (data) => {
+    console.log(data)
+}
+const beforeAvatarUpload = (rawFile) => {
+    if (rawFile.type !== 'image/jpeg'&&rawFile.type !== 'image/png') {
+        ElMessage.error('Avatar picture must be JPG format!')
+        return false
+    } else if (rawFile.size / 1024 / 1024 > 2) {
+        ElMessage.error('Avatar picture size can not exceed 2MB!')
+        return false
+    }
+    return true
 }
 const handlerem = (index) => {
     tableData.value.splice(index, 1)
@@ -138,7 +152,7 @@ const tableData = ref([])
 //请求用户列表
 usersList().then((val)=>{
     console.log(val)
-    const data=val.data.data
+    const data=val.data
     data.forEach((item)=>{
         tableData.value.push({
         username: item.username,
@@ -162,12 +176,10 @@ const startPage=ref(0)
 const tableDataRef=ref(null)
 const pageDataRef=computed(()=>{//slice包前不包后 起始索引0 截止索引2 得到的是0,1
     if(tableDataRef.value!=null){
-        console.log(123)
       return  tableDataRef.value.slice(startPage.value*pageSize.value,(startPage.value+1)*pageSize.value)
     }else{
         return tableData.value
     }
-    
 })
 const handleClick=((index)=>{
     console.log(index)
