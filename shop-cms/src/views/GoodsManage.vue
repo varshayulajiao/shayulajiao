@@ -278,7 +278,7 @@
 </template>
 
 <script setup>
-import { getGoodList }from '../api/goods'
+
 import {ref,reactive} from 'vue'
 const activeName = ref('all')
 
@@ -314,9 +314,7 @@ const multipleSelection =ref(null)
 const handleSelectionChange = (val) => {
   multipleSelection.value = val
 }
-getGoodList({}).then((res)=>{
-    console.log(res)
-})
+
 const tableData = ref([
   {
     xxx:'123',

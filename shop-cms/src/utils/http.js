@@ -5,7 +5,12 @@ const instance = axios.create({
   //localhost:8080/api/ 
   baseURL: '/api',
   //请求超时
-  timeout: 5000
+  timeout: 5000,
+  headers:{'Content-Type':'application/json'},
+  params:{
+
+  }
+  
 });
 
 // 添加请求拦截器
