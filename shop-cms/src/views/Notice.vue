@@ -64,7 +64,7 @@ const now = new Date()
 
 const onAddItem = () => {
     now.setDate(now.getDate() + 1)
-    tableData.value.push({
+    tableData.value.unshift({
     date: input.value,
     name: dayjs(now).format('YYYY-MM-DD hh:mm:ss'),
     address: '',
